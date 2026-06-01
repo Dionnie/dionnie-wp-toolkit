@@ -1,0 +1,18 @@
+{
+    "name": "dionnie/wp",
+    "description": "A WP plugin development helper.",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Dionnie\\Wp\\": "src/",
+            "Dionnie\\Modules\\": "modules/",
+            "Dionnie\\Helpers\\": "helpers/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mark Dionnie Bulingit"
+        }
+    ],
+    "require": {}
+}

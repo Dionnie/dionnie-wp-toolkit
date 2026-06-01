@@ -1,0 +1,23 @@
+{
+  "src/css/app.css": {
+    "file": "assets/app-Fh9nDnXQ.css",
+    "name": "app",
+    "names": [
+      "app.css"
+    ],
+    "src": "src/css/app.css",
+    "isEntry": true
+  },
+  "src/js/app.js": {
+    "file": "assets/app-CwEuO3Hz.js",
+    "name": "app",
+    "src": "src/js/app.js",
+    "isEntry": true
+  },
+  "src/upholstery-previz/upholstery-previz.tsx": {
+    "file": "assets/upholstery-previz-CC9vHBBn.js",
+    "name": "upholstery-previz",
+    "src": "src/upholstery-previz/upholstery-previz.tsx",
+    "isEntry": true
+  }
+}
