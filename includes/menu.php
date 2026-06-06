@@ -25,14 +25,6 @@ function my_custom_plugin_admin_menu() {
         25                        
     );
 
-    add_submenu_page(
-        $plugin_slug,  
-        'Tasks',                  
-        'Tasks List',                  
-        'manage_options',              
-        'dionnie-tasks-list',           
-        'dionnie_tasks_list_ui'         
-    );
 }
 }
 ?>

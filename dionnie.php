@@ -127,14 +127,7 @@ function my_custom_plugin_admin_menu() {
         25                              // Position in the menu
     );
 
-    add_submenu_page(
-        'dionnie-wp-toolkit',   // Parent slug
-        'Tasks',                        // Page title
-        'Tasks List',                   // Menu title
-        'manage_options',               // Required capability
-        'dionnie-tasks-list',           // Menu slug
-        'dionnie_tasks_list_ui'         // Callback function
-    );
+   
 }
 
 // Callback function to render the dashboard UI
@@ -214,22 +207,3 @@ function my_custom_plugin_dashboard_ui() {
     <?php
 }
 
-// Callback function to render the Tasks List table UI
-function dionnie_tasks_list_ui() {
-    // Check user capabilities
-    if (!current_user_can('manage_options')) {
-        return;
-    }
-
-    $tasksTable = new \DionnieWPToolkit\Modules\Tasks\TasksListTable();
-    $tasksTable->prepare_items();
-    ?>
-    <div class="wrap">
-        <h1 class="wp-heading-inline">Tasks</h1>
-        <form method="get">
-            <input type="hidden" name="page" value="<?php echo esc_attr($_REQUEST['page'] ?? 'dionnie-tasks-list'); ?>" />
-            <?php $tasksTable->display(); ?>
-        </form>
-    </div>
-    <?php
-}
