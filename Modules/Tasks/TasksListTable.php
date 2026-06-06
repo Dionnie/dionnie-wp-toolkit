@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Dionnie\Modules\Tasks;
+namespace DionnieWPToolkit\Modules\Tasks;
 
 // Ensure the base WP_List_Table class is loaded
 if (!class_exists('WP_List_Table')) {

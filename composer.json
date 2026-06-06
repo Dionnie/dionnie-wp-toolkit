@@ -4,9 +4,10 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Dionnie\\Wp\\": "src/",
-            "Dionnie\\Modules\\": "modules/",
-            "Dionnie\\Helpers\\": "helpers/"
+            "DionnieWPToolkit\\Wp\\": "src/",
+            "DionnieWPToolkit\\Modules\\": "modules/",
+            "DionnieWPToolkit\\Helpers\\": "helpers/",
+            "DionnieWPToolkit\\Core\\": "includes/"
         }
     },
     "authors": [

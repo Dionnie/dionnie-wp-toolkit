@@ -14,7 +14,7 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-use Dionnie\Helpers\DatabaseTable;
+use DionnieWPToolkit\Helpers\DatabaseTable;
 
 // Drop the dionnie_tasks table
 $tasksTable = new DatabaseTable('dionnie_tasks');

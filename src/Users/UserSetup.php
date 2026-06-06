@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Dionnie\Wp\Users;
+namespace DionnieWPToolkit\Wp\Users;
 
 /**
  * Manages custom user roles, capabilities, and profile fields.

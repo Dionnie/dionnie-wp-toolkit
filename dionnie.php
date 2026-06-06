@@ -1,57 +1,50 @@
 <?php
 /**
- * Plugin Name: Dionnie WP Toolki
+ * Plugin Name: Dionnie Toolkit
  * Description: This is a basic plugin that adds a custom message to posts.
  * Version: 1.0
  * Author: Your Name
  */
 declare(strict_types=1);
 
-// Prevent direct access to the file for security
+
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
-} else {
-    add_action('admin_notices', function(): void {
-        echo '<div class="error"><p>' . esc_html__('Autoloader missing. Run "composer install" inside the plugin directory.', 'dionnie-wp') . '</p></div>';
-    });
-    return;
+} 
+
+
+
+use DionnieWPToolkit\Wp\Admin\Settings\Menu;
+use DionnieWPToolkit\Helpers\DependencyChecker;
+use DionnieWPToolkit\Modules\LMS\QuizField;
+use DionnieWPToolkit\Modules\Tasks\Tasks;
+use DionnieWPToolkit\Wp\Users\UserSetup;
+use DionnieWPToolkit\Helpers\DatabaseTable;
+
+
+function run_coderockz_woo_delivery() {
+    $plugin = new \DionnieWPToolkit\Core\Plugin();
+    $plugin->run();
 }
-
-use Dionnie\Wp\Admin\Settings\Menu;
-use Dionnie\Helpers\DependencyChecker;
-use Dionnie\Modules\LoginCustomizer\LoginCustomizer;
-use Dionnie\Modules\Tasks\Tasks;
-use Dionnie\Wp\Users\UserSetup;
-use Dionnie\Helpers\DatabaseTable;
+run_coderockz_woo_delivery();
 
 
-register_activation_hook(__FILE__, function(): void {
-    $tasksTable = new DatabaseTable('dionnie_tasks');
-    $schema = "
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
-        title varchar(255) NOT NULL,
-        description text NOT NULL,
-        status varchar(50) DEFAULT 'pending' NOT NULL,
-        created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
-        PRIMARY KEY  (id)
-    ";
-    $tasksTable->createTable($schema);
-});
+register_activation_hook( __FILE__, [ new \DionnieWPToolkit\Core\Activator(), 'activate' ] );
+register_deactivation_hook( __FILE__, [ new \DionnieWPToolkit\Core\Deactivator(), 'deactivate' ] );
 
 
 add_action('plugins_loaded', function(): void {
 
 
-    $login_customizer = new LoginCustomizer();
-    $login_customizer->register_hooks();
+
 
     if (is_admin()) {
      
-        $dependency_checker = new DependencyChecker('Dionnie WP Toolki', [
+        $dependency_checker = new DependencyChecker('Dionnie Toolkit', [
             'Secure Custom Fields' => 'secure-custom-fields/secure-custom-fields.php'
         ]);
 
@@ -90,6 +83,11 @@ add_action('plugins_loaded', function(): void {
 
     $user_setup = new UserSetup($roles_to_add, $profile_fields);
     $user_setup->register_hooks();
+
+    // Register custom SCF/ACF field
+    add_action('acf/include_field_types', function() {
+        new QuizField();
+    });
 });
 
 if(file_exists( plugin_dir_path(__FILE__) . 'public/hot')){
@@ -120,17 +118,17 @@ add_action('admin_menu', 'my_custom_plugin_admin_menu');
 
 function my_custom_plugin_admin_menu() {
     add_menu_page(
-        'My Plugin Dashboard',          // Page title
-        'My Plugin',                    // Menu title
+        'Dionnie Toolkit Dashboard',          // Page title
+        'Dionnie Toolkit',                    // Menu title
         'manage_options',               // Required capability
-        'my-custom-plugin-dashboard',   // Menu slug
+        'dionnie-wp-toolkit',   // Menu slug
         'my_custom_plugin_dashboard_ui',// Callback function to render the UI
         'dashicons-admin-generic',      // Dashicon icon
         25                              // Position in the menu
     );
 
     add_submenu_page(
-        'my-custom-plugin-dashboard',   // Parent slug
+        'dionnie-wp-toolkit',   // Parent slug
         'Tasks',                        // Page title
         'Tasks List',                   // Menu title
         'manage_options',               // Required capability
@@ -223,7 +221,7 @@ function dionnie_tasks_list_ui() {
         return;
     }
 
-    $tasksTable = new \Dionnie\Modules\Tasks\TasksListTable();
+    $tasksTable = new \DionnieWPToolkit\Modules\Tasks\TasksListTable();
     $tasksTable->prepare_items();
     ?>
     <div class="wrap">

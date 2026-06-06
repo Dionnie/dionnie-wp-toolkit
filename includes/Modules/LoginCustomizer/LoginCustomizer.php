@@ -1,15 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace Dionnie\Modules\LoginCustomizer;
+namespace DionnieWPToolkit\Core\Modules\LoginCustomizer;
 
-class LoginCustomizer {
+use DionnieWPToolkit\Core\Interfaces\Registerable;
+
+class LoginCustomizer implements Registerable {
 
     /**
      * Register WordPress hooks for the login page.
      */
-    public function register_hooks(): void {
-        // Hook into scripts to load our CSS over the default WP login CSS
+
+
+     public function register(): void {
+ // Hook into scripts to load our CSS over the default WP login CSS
         add_action('login_enqueue_scripts', [$this, 'enqueue_custom_styles']);
         
         // Dequeue unnecessary assets to improve performance
@@ -21,7 +25,10 @@ class LoginCustomizer {
         
         // Inject our custom logo/name inside the login box (overriding the WP logo)
         add_filter('login_message', [$this, 'inject_custom_logo']);
-    }
+
+     }
+
+
 
     /**
      * Output custom CSS to restyle standard WordPress form fields to match our design.

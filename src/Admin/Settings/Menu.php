@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Dionnie\Wp\Admin\Settings;
+namespace DionnieWPToolkit\Wp\Admin\Settings;
 
 /**
  * Handles the API Settings registration, validation, and rendering in a single, cohesive class.

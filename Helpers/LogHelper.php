@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Dionnie\Helpers;
+namespace DionnieWPToolkit\Helpers;
 
 class LogHelper {
 
