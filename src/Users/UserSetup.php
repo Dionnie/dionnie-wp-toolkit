@@ -6,7 +6,7 @@ namespace DionnieWPToolkit\Wp\Users;
 /**
  * Manages custom user roles, capabilities, and profile fields.
  */
-class UserSetup
+class UserSetup  
 {
     /**
      * @var array<string, array{display_name: string, capabilities: array<string, bool>}>

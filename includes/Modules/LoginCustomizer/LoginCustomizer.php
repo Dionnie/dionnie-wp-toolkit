@@ -7,13 +7,9 @@ use DionnieWPToolkit\Core\Interfaces\Registerable;
 
 class LoginCustomizer implements Registerable {
 
-    /**
-     * Register WordPress hooks for the login page.
-     */
-
-
+ 
      public function register(): void {
- // Hook into scripts to load our CSS over the default WP login CSS
+        // Hook into scripts to load our CSS over the default WP login CSS
         add_action('login_enqueue_scripts', [$this, 'enqueue_custom_styles']);
         
         // Dequeue unnecessary assets to improve performance
@@ -27,7 +23,6 @@ class LoginCustomizer implements Registerable {
         add_filter('login_message', [$this, 'inject_custom_logo']);
 
      }
-
 
 
     /**

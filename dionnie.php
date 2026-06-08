@@ -19,39 +19,30 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
 
 
 use DionnieWPToolkit\Wp\Admin\Settings\Menu;
-use DionnieWPToolkit\Helpers\DependencyChecker;
-use DionnieWPToolkit\Modules\LMS\QuizField;
+
 use DionnieWPToolkit\Modules\Tasks\Tasks;
 use DionnieWPToolkit\Wp\Users\UserSetup;
 use DionnieWPToolkit\Helpers\DatabaseTable;
 
 
-function run_coderockz_woo_delivery() {
-    $plugin = new \DionnieWPToolkit\Core\Plugin();
-    $plugin->run();
-}
-run_coderockz_woo_delivery();
+( new \DionnieWPToolkit\Helpers\DependencyChecker(
+    'Dionnie Toolkit',
+    [
+        'Secure Custom Fields' => 'secure-custom-fields/secure-custom-fields.php'
+    ]
+))->register();
 
+
+(new \DionnieWPToolkit\Core\Plugin())->run();
 
 register_activation_hook( __FILE__, [ new \DionnieWPToolkit\Core\Activator(), 'activate' ] );
 register_deactivation_hook( __FILE__, [ new \DionnieWPToolkit\Core\Deactivator(), 'deactivate' ] );
 
-
 add_action('plugins_loaded', function(): void {
 
 
-
-
     if (is_admin()) {
-     
-        $dependency_checker = new DependencyChecker('Dionnie Toolkit', [
-            'Secure Custom Fields' => 'secure-custom-fields/secure-custom-fields.php'
-        ]);
-
-        if ($dependency_checker->has_missing_dependencies()) {
-            $dependency_checker->register_admin_notices();
-            return; 
-        }
+ 
      
 
         $admin_menu = new Menu( 'dionnie-api-settings' );
@@ -84,10 +75,6 @@ add_action('plugins_loaded', function(): void {
     $user_setup = new UserSetup($roles_to_add, $profile_fields);
     $user_setup->register_hooks();
 
-    // Register custom SCF/ACF field
-    add_action('acf/include_field_types', function() {
-        new QuizField();
-    });
 });
 
 if(file_exists( plugin_dir_path(__FILE__) . 'public/hot')){
