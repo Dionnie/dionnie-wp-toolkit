@@ -83,6 +83,17 @@ if(file_exists( plugin_dir_path(__FILE__) . 'public/hot')){
 function enqueue_vite_dev_scripts() {
     wp_enqueue_script_module( 'vite-client', 'http://localhost:5173/@vite/client');
     wp_enqueue_script_module( 'vite-reload', 'http://localhost:5173/src/reload.js'); //reload.js must load first
+
+
+    $dependencies = [
+    
+        'scf-commands-custom-post-types', // From your list
+        'scf-commands-admin'              // From your list
+    ];
+
+    wp_enqueue_script_module(
+    'acf-quiz-choices-js', 
+   'http://localhost:5173/includes/Modules/ACF/QuizChoiceField/acf-quiz-choices.js'); 
 }
 
 add_action('wp_enqueue_scripts', 'enqueue_vite_dev_scripts');
@@ -96,7 +107,13 @@ wp_enqueue_script_module( 'app-js', 'http://localhost:5173/src/js/app.js', array
 wp_enqueue_script_module(
     'upholstery-previz-js', 
    'http://localhost:5173/src/upholstery-previz/upholstery-previz.tsx', array(), null); 
+
+
+
+
 });
+
+
 
 }
 

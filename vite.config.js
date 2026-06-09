@@ -20,6 +20,7 @@ export default defineConfig(() => {
     plugins: [
       laravel({
         input: [
+          "includes/Modules/ACF/QuizChoiceField/acf-quiz-choices.js",
           "src/css/app.css",
           "src/js/app.js",
           "src/upholstery-previz/upholstery-previz.tsx",

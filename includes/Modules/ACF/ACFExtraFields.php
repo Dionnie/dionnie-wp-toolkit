@@ -1,9 +1,11 @@
 <?php 
-namespace DionnieWPToolkit\Core\Modules\ACFFieldsModule;
+namespace DionnieWPToolkit\Core\Modules\ACF;
 
 use DionnieWPToolkit\Core\Interfaces\Registerable;
+use DionnieWPToolkit\Core\Modules\ACF\QuizChoiceField\QuizChoiceField;
 
-class AcfFieldsModule implements Registerable
+
+class ACFExtraFields implements Registerable
 {
     public function register(): void
     {
@@ -17,9 +19,7 @@ class AcfFieldsModule implements Registerable
         }
 
         // Register ALL fields here
-        new \DionnieWPToolkit\Core\Modules\ACFFieldsModule\QuizFieldField();
+        new QuizChoiceField();
     
     }
 }
-
-?>

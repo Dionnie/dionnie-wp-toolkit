@@ -7,7 +7,7 @@ use DionnieWPToolkit\Core\Modules\GoogleCalendar\GoogleCalendarModule;
 use DionnieWPToolkit\Core\Modules\LoginCustomizer\LoginCustomizer;
 use DionnieWPToolkit\Core\Modules\TaskTable\TasksTableModule;
 use DionnieWPToolkit\Core\Modules\LMS\QuizField;
-use DionnieWPToolkit\Core\Modules\ACFFieldsModule\AcfFieldsModule;
+use DionnieWPToolkit\Core\Modules\ACF\ACFExtraFields;
 
 class Plugin
 {
@@ -32,7 +32,7 @@ class Plugin
     {
         $this->modules = [
 
-         new AcfFieldsModule(),
+         new ACFExtraFields(),
          new TasksTableModule(),
          new GoogleCalendarModule(),
          new LoginCustomizer(),

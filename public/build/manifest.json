@@ -1,4 +1,10 @@
 {
+  "includes/Modules/ACF/QuizChoiceField/acf-quiz-choices.js": {
+    "file": "assets/acf-quiz-choices-Dmf3Pkhv.js",
+    "name": "acf-quiz-choices",
+    "src": "includes/Modules/ACF/QuizChoiceField/acf-quiz-choices.js",
+    "isEntry": true
+  },
   "src/css/app.css": {
     "file": "assets/app-Fh9nDnXQ.css",
     "name": "app",
@@ -9,13 +15,13 @@
     "isEntry": true
   },
   "src/js/app.js": {
-    "file": "assets/app-CwEuO3Hz.js",
+    "file": "assets/app-D18EqzA1.js",
     "name": "app",
     "src": "src/js/app.js",
     "isEntry": true
   },
   "src/upholstery-previz/upholstery-previz.tsx": {
-    "file": "assets/upholstery-previz-CC9vHBBn.js",
+    "file": "assets/upholstery-previz-T4AVMy1f.js",
     "name": "upholstery-previz",
     "src": "src/upholstery-previz/upholstery-previz.tsx",
     "isEntry": true

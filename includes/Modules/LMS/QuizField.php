@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace DionnieWPToolkit\Core\Modules\LMS;
 
-/**
- * Actual ACF Field Type
- */
+
 class QuizFieldField extends \acf_field
 {
     public function initialize(): void
