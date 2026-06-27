@@ -6,8 +6,9 @@ use DionnieWPToolkit\Core\Interfaces\Registerable;
 use DionnieWPToolkit\Core\Modules\GoogleCalendar\GoogleCalendarModule;
 use DionnieWPToolkit\Core\Modules\LoginCustomizer\LoginCustomizer;
 use DionnieWPToolkit\Core\Modules\TaskTable\TasksTableModule;
-use DionnieWPToolkit\Core\Modules\LMS\QuizField;
 use DionnieWPToolkit\Core\Modules\ACF\ACFExtraFields;
+use DionnieWPToolkit\Core\Modules\Menus\Menus;
+use DionnieWPToolkit\Wp\UserBuilder\UserBuilder;
 
 class Plugin
 {
@@ -17,44 +18,35 @@ class Plugin
 
     public function __construct()
     {
-        if (defined('CODEROCKZ_WOO_DELIVERY_VERSION')) {
-            $this->version = CODEROCKZ_WOO_DELIVERY_VERSION;
-        }
-
-        // ONLY instantiate, do NOT run anything yet
         $this->bootstrap_modules();
     }
 
-    /**
-     * Instantiate modules only (safe)
-     */
+    public function run(): void
+    {
+        add_action('plugins_loaded', [$this, 'registerModules']);
+    }
+
+
     private function bootstrap_modules(): void
     {
         $this->modules = [
+            new Menus('dionnie-toolkit'),
+            new ACFExtraFields(),
+            new TasksTableModule(),
+            new GoogleCalendarModule(),
+            new LoginCustomizer(),
 
-         new ACFExtraFields(),
-         new TasksTableModule(),
-         new GoogleCalendarModule(),
-         new LoginCustomizer(),
         ];
     }
 
-    /**
-     * Run modules AFTER WordPress is ready
-     */
-public function run(): void
-{
-    add_action('plugins_loaded', [$this, 'registerModules']);
-}
-
-public function registerModules(): void
-{
-    foreach ($this->modules as $module) {
-        if ($module instanceof Registerable) {
-            $module->register();
+    public function registerModules(): void
+    {
+        foreach ($this->modules as $module) {
+            if ($module instanceof Registerable) {
+                $module->register();
+            }
         }
     }
-}
 
     public function get_plugin_name(): string
     {

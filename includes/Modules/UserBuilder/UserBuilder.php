@@ -1,12 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
-namespace DionnieWPToolkit\Wp\Users;
+namespace DionnieWPToolkit\Wp\UserBuilder;
+
+use DionnieWPToolkit\Core\Interfaces\Registerable;
 
 /**
  * Manages custom user roles, capabilities, and profile fields.
  */
-class UserSetup  
+class UserBuilder implements Registerable
 {
     /**
      * @var array<string, array{display_name: string, capabilities: array<string, bool>}>
@@ -33,7 +36,7 @@ class UserSetup
     /**
      * Registers WordPress hooks.
      */
-    public function register_hooks(): void
+    public function register(): void
     {
         add_action('init', [$this, 'create_roles']);
 
@@ -69,7 +72,7 @@ class UserSetup
             return;
         }
 
-        ?>
+?>
         <h2><?php esc_html_e('Additional Information', 'dionnie-wp'); ?></h2>
         <table class="form-table">
             <?php foreach ($this->profile_fields as $meta_key => $field_data) : ?>
@@ -77,16 +80,16 @@ class UserSetup
                     <th><label for="<?php echo esc_attr($meta_key); ?>"><?php echo esc_html($field_data['label']); ?></label></th>
                     <td>
                         <input type="text"
-                               name="<?php echo esc_attr($meta_key); ?>"
-                               id="<?php echo esc_attr($meta_key); ?>"
-                               value="<?php echo esc_attr(get_user_meta($user->ID, $meta_key, true)); ?>"
-                               class="regular-text" />
+                            name="<?php echo esc_attr($meta_key); ?>"
+                            id="<?php echo esc_attr($meta_key); ?>"
+                            value="<?php echo esc_attr(get_user_meta($user->ID, $meta_key, true)); ?>"
+                            class="regular-text" />
                         <p class="description"><?php echo esc_html($field_data['description']); ?></p>
                     </td>
                 </tr>
             <?php endforeach; ?>
         </table>
-        <?php
+<?php
     }
 
     /**

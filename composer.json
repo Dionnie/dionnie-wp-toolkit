@@ -6,7 +6,7 @@
         "psr-4": {
             "DionnieWPToolkit\\Wp\\": "src/",
             "DionnieWPToolkit\\Modules\\": "modules/",
-            "DionnieWPToolkit\\Helpers\\": "helpers/",
+            "DionnieWPToolkit\\Helpers\\": "includes/helpers/",
             "DionnieWPToolkit\\Core\\": "includes/"
         }
     },

@@ -3,6 +3,7 @@ namespace DionnieWPToolkit\Core\Modules\ACF;
 
 use DionnieWPToolkit\Core\Interfaces\Registerable;
 use DionnieWPToolkit\Core\Modules\ACF\QuizChoiceField\QuizChoiceField;
+use DionnieWPToolkit\Core\Modules\ACF\CourseBuilderField\CourseBuilderField;
 
 
 class ACFExtraFields implements Registerable
@@ -20,6 +21,7 @@ class ACFExtraFields implements Registerable
 
         // Register ALL fields here
         new QuizChoiceField();
+        new CourseBuilderField();
     
     }
 }
