@@ -7,14 +7,6 @@ namespace DionnieWPToolkit\Core\Helpers;
 class ViteManifestHelper
 {
     private string $devServer = 'http://localhost:5173/';
-    private string $baseDir;
-    private string $baseUrl;
-
-    public function __construct()
-    {
-        $this->baseDir = WP_PLUGIN_DIR . '/dionnie-wp-toolkit';
-        $this->baseUrl = plugins_url('/dionnie-wp-toolkit');
-    }
 
     public function enqueue(array $entries): void
     {
@@ -32,7 +24,7 @@ class ViteManifestHelper
 
     private function isDevMode(): bool
     {
-        return file_exists($this->baseDir . '/public/hot');
+        return file_exists(rtrim(DIONNIE_WP_PATH, '/') . '/public/hot');
     }
 
     private function enqueueForDevelopment(array $entries): void
@@ -41,7 +33,7 @@ class ViteManifestHelper
 
         foreach ($entries as $entryKey) {
             $fileUrl = $this->devServer . ltrim($entryKey, '/');
-            $handle  = 'dionnie-' . sanitize_title($entryKey);
+            $handle  = $this->generateHandle($entryKey);
 
             if (preg_match('/\.(css|scss|sass)$/', $entryKey)) {
                 wp_enqueue_style($handle, $fileUrl, [], null);
@@ -53,7 +45,7 @@ class ViteManifestHelper
 
     private function enqueueForProduction(array $entries): void
     {
-        $manifestPath = $this->baseDir . '/public/build/manifest.json';
+        $manifestPath = rtrim(DIONNIE_WP_PATH, '/') . '/public/build/manifest.json';
 
         if (!file_exists($manifestPath)) {
             return;
@@ -64,7 +56,8 @@ class ViteManifestHelper
             return;
         }
 
-        $assetsUrl = $this->baseUrl . '/public/build/';
+        // Fixed double slash formatting here
+        $assetsUrl = rtrim(DIONNIE_WP_URL, '/') . '/public/build/';
 
         foreach ($entries as $entryKey) {
             if (!isset($manifestData[$entryKey])) {
@@ -78,7 +71,7 @@ class ViteManifestHelper
             }
 
             $fileUrl = $assetsUrl . ltrim($asset['file'], '/');
-            $handle  = 'dionnie-' . sanitize_title($entryKey);
+            $handle  = $this->generateHandle($entryKey);
 
             if (preg_match('/\.(css|scss|sass)$/', $entryKey)) {
                 wp_enqueue_style($handle, $fileUrl, [], null);
@@ -91,10 +84,24 @@ class ViteManifestHelper
                 if (!empty($asset['css']) && is_array($asset['css'])) {
                     foreach ($asset['css'] as $index => $cssFile) {
                         $cssHandle = $handle . '-css-' . (string)$index;
-                        wp_enqueue_style($cssHandle, $assetsUrl . ltrim($cssFile, '/'), [], null);
+                        wp_enqueue_style($cssHandle, $assetsUrl . ltrim($cssFile, '/'), [], DIONNIE_WP_VERSION);
                     }
                 }
             }
         }
+    }
+
+    /**
+     * Generates a clean, short asset handle based purely on the file name.
+     */
+    private function generateHandle(string $entryKey): string
+    {
+        // Extracts "login-customizer.css" from the full path
+        $filename = basename($entryKey);
+
+        // Strips extensions (.css, .scss, .js, etc.) so we don't get double extensions in the final ID
+        $cleanName = (string) preg_replace('/\.(css|scss|sass|js|jsx|ts|tsx)$/', '', $filename);
+
+        return DIONNIE_WP_SLUG . '-' . sanitize_title($cleanName);
     }
 }

@@ -18,11 +18,24 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-define('PLUGIN_PATH', plugin_dir_path(__FILE__));
-define('PLUGIN_URL', plugin_dir_url(__FILE__));
 
+/**
+ * Define Global Constants
+ * Always prefix your constants to avoid collisions with other plugins.
+ */
+define('DIONNIE_WP_NAME', 'Dionnie WP Toolkit');
+define('DIONNIE_WP_VERSION', '1.0.0');
+define('DIONNIE_WP_DB_VERSION', '1.0.0');
+define('DIONNIE_WP_SLUG', 'dionnie-wp-toolkit');
+define('DIONNIE_WP_TEXT_DOMAIN', 'dionnie-wp');
 
+// Absolute Server Paths (Includes trailing slash)
+define('DIONNIE_WP_PATH', plugin_dir_path(__FILE__));
+define('DIONNIE_WP_INCLUDES_PATH', DIONNIE_WP_PATH . 'includes/');
 
+// Web URLs (Includes trailing slash)
+define('DIONNIE_WP_URL', plugin_dir_url(__FILE__));
+define('DIONNIE_WP_ASSETS_URL', DIONNIE_WP_URL . 'public/');
 
 use DionnieWPToolkit\Wp\Admin\Settings\Menu;
 

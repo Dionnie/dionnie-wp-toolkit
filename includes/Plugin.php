@@ -8,11 +8,11 @@ use DionnieWPToolkit\Core\Modules\LoginCustomizer\LoginCustomizer;
 use DionnieWPToolkit\Core\Modules\TaskTable\TasksTableModule;
 use DionnieWPToolkit\Core\Modules\ACF\ACFExtraFields;
 use DionnieWPToolkit\Core\Modules\Menus\Menus;
+use DionnieWPToolkit\Helpers\DependencyChecker;
 
 class Plugin
 {
-    protected string $plugin_name = 'dionnie-wp-toolkit';
-    protected string $version = '1.0.0';
+
     protected array $modules = [];
 
     public function __construct()
@@ -29,6 +29,12 @@ class Plugin
     private function bootstrap_modules(): void
     {
         $this->modules = [
+            new DependencyChecker(
+                DIONNIE_WP_NAME,
+                [
+                    'Secure Custom Fields' => 'secure-custom-fields/secure-custom-fields.php'
+                ]
+            ),
             new Menus('dionnie-toolkit'),
             new ACFExtraFields(),
             new TasksTableModule(),
@@ -44,15 +50,5 @@ class Plugin
                 $module->register();
             }
         }
-    }
-
-    public function get_plugin_name(): string
-    {
-        return $this->plugin_name;
-    }
-
-    public function get_version(): string
-    {
-        return $this->version;
     }
 }
