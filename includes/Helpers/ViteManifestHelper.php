@@ -8,6 +8,10 @@ class ViteManifestHelper
 {
     private string $devServer = 'http://localhost:5173/';
 
+    /**
+     * Enqueues Vite entries with support for WordPress dependencies and options.
+     * * @param array $entries Associative array of entry files or flat list of strings.
+     */
     public function enqueue(array $entries): void
     {
         if (empty($entries)) {
@@ -29,16 +33,24 @@ class ViteManifestHelper
 
     private function enqueueForDevelopment(array $entries): void
     {
-        wp_enqueue_script_module('vite-client', $this->devServer . '@vite/client');
+        // Inject core dev client and your custom reload module
+        wp_enqueue_script_module('vite-client', $this->devServer . '@vite/client', [], null);
+        wp_enqueue_script_module('vite-reload', $this->devServer . 'src/reload.js', [], null);
 
-        foreach ($entries as $entryKey) {
-            $fileUrl = $this->devServer . ltrim($entryKey, '/');
-            $handle  = $this->generateHandle($entryKey);
+        foreach ($entries as $entryKey => $config) {
+            $options = is_array($config) ? $config : [];
+            $deps    = $options['deps'] ?? [];
 
-            if (preg_match('/\.(css|scss|sass)$/', $entryKey)) {
-                wp_enqueue_style($handle, $fileUrl, [], null);
-            } elseif (preg_match('/\.(js|jsx|ts|tsx)$/', $entryKey)) {
-                wp_enqueue_script_module($handle, $fileUrl);
+            // If entry key is a numeric index, the config is actually the file path string
+            $fileKey = is_int($entryKey) ? $config : $entryKey;
+
+            $fileUrl = $this->devServer . ltrim($fileKey, '/');
+            $handle  = $this->generateHandle($fileKey);
+
+            if (preg_match('/\.(css|scss|sass)$/', $fileKey)) {
+                wp_enqueue_style($handle, $fileUrl, $deps, null);
+            } elseif (preg_match('/\.(js|jsx|ts|tsx)$/', $fileKey)) {
+                wp_enqueue_script_module($handle, $fileUrl, $deps, null);
             }
         }
     }
@@ -56,30 +68,35 @@ class ViteManifestHelper
             return;
         }
 
-        // Fixed double slash formatting here
         $assetsUrl = rtrim(DIONNIE_WP_URL, '/') . '/public/build/';
 
-        foreach ($entries as $entryKey) {
-            if (!isset($manifestData[$entryKey])) {
+        foreach ($entries as $entryKey => $config) {
+            $options  = is_array($config) ? $config : [];
+            $deps     = $options['deps'] ?? [];
+            $inFooter = $options['in_footer'] ?? true;
+
+            $fileKey = is_int($entryKey) ? $config : $entryKey;
+
+            if (!isset($manifestData[$fileKey])) {
                 continue;
             }
 
-            $asset = $manifestData[$entryKey];
+            $asset = $manifestData[$fileKey];
 
             if (!isset($asset['file'])) {
                 continue;
             }
 
             $fileUrl = $assetsUrl . ltrim($asset['file'], '/');
-            $handle  = $this->generateHandle($entryKey);
+            $handle  = $this->generateHandle($fileKey);
 
-            if (preg_match('/\.(css|scss|sass)$/', $entryKey)) {
-                wp_enqueue_style($handle, $fileUrl, [], null);
+            if (preg_match('/\.(css|scss|sass)$/', $fileKey)) {
+                wp_enqueue_style($handle, $fileUrl, $deps, null);
                 continue;
             }
 
-            if (preg_match('/\.(js|jsx|ts|tsx)$/', $entryKey)) {
-                wp_enqueue_script($handle, $fileUrl, [], null, true);
+            if (preg_match('/\.(js|jsx|ts|tsx)$/', $fileKey)) {
+                wp_enqueue_script($handle, $fileUrl, $deps, DIONNIE_WP_VERSION, $inFooter);
 
                 if (!empty($asset['css']) && is_array($asset['css'])) {
                     foreach ($asset['css'] as $index => $cssFile) {
@@ -91,15 +108,9 @@ class ViteManifestHelper
         }
     }
 
-    /**
-     * Generates a clean, short asset handle based purely on the file name.
-     */
     private function generateHandle(string $entryKey): string
     {
-        // Extracts "login-customizer.css" from the full path
-        $filename = basename($entryKey);
-
-        // Strips extensions (.css, .scss, .js, etc.) so we don't get double extensions in the final ID
+        $filename  = basename($entryKey);
         $cleanName = (string) preg_replace('/\.(css|scss|sass|js|jsx|ts|tsx)$/', '', $filename);
 
         return DIONNIE_WP_SLUG . '-' . sanitize_title($cleanName);

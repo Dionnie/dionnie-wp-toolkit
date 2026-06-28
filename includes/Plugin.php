@@ -9,6 +9,7 @@ use DionnieWPToolkit\Core\Modules\TaskTable\TasksTableModule;
 use DionnieWPToolkit\Core\Modules\ACF\ACFExtraFields;
 use DionnieWPToolkit\Core\Modules\Menus\Menus;
 use DionnieWPToolkit\Helpers\DependencyChecker;
+use DionnieWPToolkit\Core\Helpers\ViteManifestHelper;
 
 class Plugin
 {
@@ -23,6 +24,28 @@ class Plugin
     public function run(): void
     {
         add_action('plugins_loaded', [$this, 'registerModules']);
+        add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
+    }
+
+
+    public function enqueue_assets(): void
+    {
+        $vite_helper = new ViteManifestHelper();
+
+        $entries = [
+            'src/css/app.css',
+            'src/js/app.js',
+            'src/upholstery-previz/upholstery-previz.tsx',
+            'includes/Modules/ACF/CourseBuilderField/acf-course-builder.js' => [
+                'deps'      => ['jquery', 'acf-input'],
+
+            ],
+            'includes/Modules/ACF/QuizChoiceField/acf-quiz-choices.js' => [
+                'deps'      => ['jquery', 'acf-input'],
+            ]
+        ];
+
+        $vite_helper->enqueue($entries);
     }
 
 

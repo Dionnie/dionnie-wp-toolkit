@@ -12,7 +12,7 @@ class LoginCustomizer implements Registerable
     public function register(): void
     {
         // Enqueue custom assets via Vite
-        add_action('login_enqueue_scripts', [$this, 'enqueue_vite_assets']);
+        add_action('login_enqueue_scripts', [$this, 'enqueue_assets']);
 
         // Dequeue unnecessary assets to improve performance
         add_action('login_enqueue_scripts', [$this, 'dequeue_unnecessary_assets'], 100);
@@ -28,7 +28,7 @@ class LoginCustomizer implements Registerable
     /**
      * Enqueue the custom CSS stylesheet via Vite to restyle standard WordPress form fields.
      */
-    public function enqueue_vite_assets(): void
+    public function enqueue_assets(): void
     {
         $vite_helper = new ViteManifestHelper();
 

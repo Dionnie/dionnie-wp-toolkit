@@ -18,90 +18,19 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-
-/**
- * Define Global Constants
- * Always prefix your constants to avoid collisions with other plugins.
- */
 define('DIONNIE_WP_NAME', 'Dionnie WP Toolkit');
 define('DIONNIE_WP_VERSION', '1.0.0');
 define('DIONNIE_WP_DB_VERSION', '1.0.0');
 define('DIONNIE_WP_SLUG', 'dionnie-wp-toolkit');
 define('DIONNIE_WP_TEXT_DOMAIN', 'dionnie-wp');
-
-// Absolute Server Paths (Includes trailing slash)
 define('DIONNIE_WP_PATH', plugin_dir_path(__FILE__));
 define('DIONNIE_WP_INCLUDES_PATH', DIONNIE_WP_PATH . 'includes/');
-
-// Web URLs (Includes trailing slash)
 define('DIONNIE_WP_URL', plugin_dir_url(__FILE__));
 define('DIONNIE_WP_ASSETS_URL', DIONNIE_WP_URL . 'public/');
 
-use DionnieWPToolkit\Wp\Admin\Settings\Menu;
+$plugin = new \DionnieWPToolkit\Core\Plugin();
+$plugin->run();
 
-
-(new \DionnieWPToolkit\Helpers\DependencyChecker(
-    'Dionnie Toolkit',
-    [
-        'Secure Custom Fields' => 'secure-custom-fields/secure-custom-fields.php'
-    ]
-))->register();
-
-
-(new \DionnieWPToolkit\Core\Plugin())->run();
 
 register_activation_hook(__FILE__, [new \DionnieWPToolkit\Core\Activator(), 'activate']);
 register_deactivation_hook(__FILE__, [new \DionnieWPToolkit\Core\Deactivator(), 'deactivate']);
-
-add_action('plugins_loaded', function (): void {
-
-
-    if (is_admin()) {
-
-        $admin_menu = new Menu('dionnie-api-settings');
-        $admin_menu->register_hooks();
-    }
-});
-
-if (file_exists(plugin_dir_path(__FILE__) . 'public/hot')) {
-
-
-    function enqueue_vite_dev_scripts()
-    {
-        wp_enqueue_script_module('vite-client', 'http://localhost:5173/@vite/client');
-        wp_enqueue_script_module('vite-reload', 'http://localhost:5173/src/reload.js'); //reload.js must load first
-
-
-        $dependencies = [
-
-            'scf-commands-custom-post-types', // From your list
-            'scf-commands-admin'              // From your list
-        ];
-
-        wp_enqueue_script_module(
-            'acf-quiz-choices-js',
-            'http://localhost:5173/includes/Modules/ACF/QuizChoiceField/acf-quiz-choices.js'
-        );
-
-        wp_enqueue_script_module(
-            'acf-course-builder-js',
-            'http://localhost:5173/includes/Modules/ACF/CourseBuilderField/acf-course-builder.js'
-        );
-    }
-
-    add_action('wp_enqueue_scripts', 'enqueue_vite_dev_scripts');
-    add_action('admin_enqueue_scripts', 'enqueue_vite_dev_scripts');
-
-    add_action('wp_enqueue_scripts', function () {
-        wp_enqueue_script_module('app-css', 'http://localhost:5173/src/css/app.css', array());
-        wp_enqueue_script_module('app-js', 'http://localhost:5173/src/js/app.js', array());
-
-
-        wp_enqueue_script_module(
-            'upholstery-previz-js',
-            'http://localhost:5173/src/upholstery-previz/upholstery-previz.tsx',
-            array(),
-            null
-        );
-    });
-}
