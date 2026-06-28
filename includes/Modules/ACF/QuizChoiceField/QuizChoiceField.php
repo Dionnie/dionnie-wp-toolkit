@@ -1,10 +1,29 @@
 <?php
+
 declare(strict_types=1);
 
 namespace DionnieWPToolkit\Core\Modules\ACF\QuizChoiceField;
 
+
 class QuizChoiceField extends \acf_field
 {
+    /**
+     * @var string The field name.
+     */
+    public $name;
+    /**
+     * @var string The field label.
+     */
+    public $label;
+    /**
+     * @var string The field category.
+     */
+    public $category;
+    /**
+     * @var array The field defaults.
+     */
+    public $defaults;
+
     public function initialize(): void
     {
         $this->name     = 'quiz';
@@ -18,15 +37,15 @@ class QuizChoiceField extends \acf_field
 
     public function input_admin_enqueue(): void
     {
-        $url     = plugin_dir_url(__FILE__); 
+        $url     = plugin_dir_url(__FILE__);
         $version = '1.0.0';
 
         wp_enqueue_style('scf-quiz-field-css', $url . 'assets/css/input.css', [], $version);
         wp_enqueue_script(
-            'scf-quiz-field-js', 
-            $url . 'assets/js/input.js', 
-            ['acf-input'], 
-            $version, 
+            'scf-quiz-field-js',
+            $url . 'assets/js/input.js',
+            ['acf-input'],
+            $version,
             true
         );
     }
@@ -37,16 +56,16 @@ class QuizChoiceField extends \acf_field
         $value = is_array($field['value']) ? $field['value'] : [];
         $choices = $value['choices'] ?? [''];
         $correct = (int) ($value['correct'] ?? 0);
-        
+
         $fieldName = esc_attr($field['name']);
-        
+
         // Create a unique name for the radio group so it groups correctly 
         // without interfering with the ACF submission
         $radioGroup = 'scf_quiz_radio_' . esc_attr($field['key']);
         $jsonString = wp_json_encode($value);
 
         echo '<div class="scf-quiz-wrapper" data-name="' . $fieldName . '" data-radio-group="' . $radioGroup . '">';
-        
+
         // This is the actual field ACF will look at during form submission.
         // It is currently type="text" and visible for debugging as requested.
         echo '<label style="display:block; margin-bottom: 5px; font-weight: bold; color: #d63638;">Debug Data (Master Field):</label>';
@@ -56,9 +75,9 @@ class QuizChoiceField extends \acf_field
 
         foreach ($choices as $index => $choice) {
             $this->renderRow(
-                $radioGroup, 
-                $index, 
-                esc_attr($choice), 
+                $radioGroup,
+                $index,
+                esc_attr($choice),
                 $index === $correct ? 'checked' : ''
             );
         }
@@ -76,25 +95,25 @@ class QuizChoiceField extends \acf_field
         string $value,
         string $checked
     ): void {
-        ?>
+?>
         <li class="scf-quiz-row" style="display:flex;gap:10px;margin-bottom:10px;padding:10px;background:#f9f9f9;border:1px solid #ccd0d4;align-items:center;">
 
             <label style="display:flex;gap:5px;align-items:center;margin:0;">
                 <input type="radio"
-                       class="scf-quiz-radio"
-                       name="<?php echo $radioGroup; ?>"
-                       value="<?php echo $index; ?>"
-                       <?php echo $checked; ?>
-                       required>
+                    class="scf-quiz-radio"
+                    name="<?php echo $radioGroup; ?>"
+                    value="<?php echo $index; ?>"
+                    <?php echo $checked; ?>
+                    required>
                 <span><?php esc_html_e('Correct', 'dionnie-wp'); ?></span>
-            </label> 
+            </label>
 
             <input type="text"
-                   class="scf-quiz-text"
-                   value="<?php echo $value; ?>"
-                   style="flex:1;margin:0;"
-                   placeholder="<?php esc_attr_e('Enter choice...', 'dionnie-wp'); ?>"
-                   required>
+                class="scf-quiz-text"
+                value="<?php echo $value; ?>"
+                style="flex:1;margin:0;"
+                placeholder="<?php esc_attr_e('Enter choice...', 'dionnie-wp'); ?>"
+                required>
 
             <div class="scf-quiz-actions" style="display:flex; gap:5px;">
                 <button type="button" class="button scf-quiz-remove">
@@ -107,7 +126,7 @@ class QuizChoiceField extends \acf_field
             </div>
 
         </li>
-        <?php
+<?php
     }
 
     public function update_value($value, $post_id, array $field): array

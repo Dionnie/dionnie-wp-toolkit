@@ -1,8 +1,17 @@
 {
   "includes/Modules/ACF/QuizChoiceField/acf-quiz-choices.js": {
-    "file": "assets/acf-quiz-choices-Dmf3Pkhv.js",
+    "file": "assets/acf-quiz-choices-CTHdaq4a.js",
     "name": "acf-quiz-choices",
     "src": "includes/Modules/ACF/QuizChoiceField/acf-quiz-choices.js",
+    "isEntry": true
+  },
+  "includes/Modules/LoginCustomizer/login-customizer.css": {
+    "file": "assets/login-customizer-CVy_xJcC.css",
+    "name": "login-customizer",
+    "names": [
+      "login-customizer.css"
+    ],
+    "src": "includes/Modules/LoginCustomizer/login-customizer.css",
     "isEntry": true
   },
   "src/css/app.css": {

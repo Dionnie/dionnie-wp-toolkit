@@ -8,7 +8,6 @@ use DionnieWPToolkit\Core\Modules\LoginCustomizer\LoginCustomizer;
 use DionnieWPToolkit\Core\Modules\TaskTable\TasksTableModule;
 use DionnieWPToolkit\Core\Modules\ACF\ACFExtraFields;
 use DionnieWPToolkit\Core\Modules\Menus\Menus;
-use DionnieWPToolkit\Wp\UserBuilder\UserBuilder;
 
 class Plugin
 {
@@ -35,7 +34,6 @@ class Plugin
             new TasksTableModule(),
             new GoogleCalendarModule(),
             new LoginCustomizer(),
-
         ];
     }
 
