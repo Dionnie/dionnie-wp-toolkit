@@ -18,7 +18,7 @@ class Menus implements Registerable
         add_action('admin_menu', function () {
             add_menu_page(
                 DIONNIE_WP_NAME,   // Page title
-                DIONNIE_WP_NAME,             // Menu title
+                "ddddd",             // Menu title
                 'manage_options',             // Required capability
                 DIONNIE_WP_SLUG,         // Menu slug
                 function () {

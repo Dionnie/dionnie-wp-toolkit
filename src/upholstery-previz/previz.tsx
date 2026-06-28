@@ -279,7 +279,7 @@ function UpholsteryCustomizer() {
                       <UploadCloud className="w-12 h-12" />
                     </div>
                     <h3 className="text-2xl text-slate-800 font-bold mb-2">
-                      This is Lans!!!
+                      Upload Furniture...
                     </h3>
                     <p className="text-slate-500 text-lg">
                       Click to browse or drag and drop an image here

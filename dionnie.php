@@ -28,7 +28,7 @@ define('DIONNIE_WP_INCLUDES_PATH', DIONNIE_WP_PATH . 'includes/');
 define('DIONNIE_WP_URL', plugin_dir_url(__FILE__));
 define('DIONNIE_WP_ASSETS_URL', DIONNIE_WP_URL . 'public/');
 
-// Define the Dev Mode constant ONCE during boot
+
 if (!defined('DIONNIE_WP_DEV_MODE')) {
     define('DIONNIE_WP_DEV_MODE', file_exists(DIONNIE_WP_PATH . 'public/hot'));
 }
