@@ -25,6 +25,18 @@ class Plugin
     {
         add_action('plugins_loaded', [$this, 'registerModules']);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
+
+        if (defined('DIONNIE_WP_DEV_MODE') && DIONNIE_WP_DEV_MODE === true) {
+            add_action('wp_enqueue_scripts', [$this, 'enqueue_vite_dev_scripts']);
+            add_action('admin_enqueue_scripts', [$this, 'enqueue_vite_dev_scripts']);
+        }
+    }
+
+
+    function enqueue_vite_dev_scripts()
+    {
+        wp_enqueue_script_module('vite-client', 'http://localhost:5173/@vite/client');
+        wp_enqueue_script_module('vite-reload', 'http://localhost:5173/src/reload.js');
     }
 
 

@@ -12,6 +12,10 @@ class ViteManifestHelper
      * Enqueues Vite entries with support for WordPress dependencies and options.
      * * @param array $entries Associative array of entry files or flat list of strings.
      */
+
+    public function __construct() {}
+
+
     public function enqueue(array $entries): void
     {
         if (empty($entries)) {
@@ -31,11 +35,11 @@ class ViteManifestHelper
         return file_exists(rtrim(DIONNIE_WP_PATH, '/') . '/public/hot');
     }
 
+
+
+
     private function enqueueForDevelopment(array $entries): void
     {
-        // Inject core dev client and your custom reload module
-        wp_enqueue_script_module('vite-client', $this->devServer . '@vite/client', [], null);
-        wp_enqueue_script_module('vite-reload', $this->devServer . 'src/reload.js', [], null);
 
         foreach ($entries as $entryKey => $config) {
             $options = is_array($config) ? $config : [];
