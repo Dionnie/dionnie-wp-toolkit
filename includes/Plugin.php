@@ -10,6 +10,7 @@ use DionnieWPToolkit\Core\Modules\ACF\ACFExtraFields;
 use DionnieWPToolkit\Core\Modules\Menus\Menus;
 use DionnieWPToolkit\Helpers\DependencyChecker;
 use DionnieWPToolkit\Core\Helpers\ViteManifestHelper;
+use DionnieWPToolkit\Helpers\DatabaseTable;
 
 class Plugin
 {
@@ -38,6 +39,29 @@ class Plugin
     {
         wp_enqueue_script_module('vite-client', 'http://localhost:5173/@vite/client');
         wp_enqueue_script_module('vite-reload', 'http://localhost:5173/src/reload.js');
+    }
+
+    function activate()
+    {
+        $tasksTable = new DatabaseTable('dionnie_tasks');
+        $schema = "
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        title varchar(255) NOT NULL,
+        description text NOT NULL,
+        status varchar(50) DEFAULT 'pending' NOT NULL,
+        created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        PRIMARY KEY  (id)
+    ";
+        $tasksTable->createTable($schema);
+    }
+
+    function deactivate() {}
+
+
+    function uninstall()
+    {
+        $tasksTable = new DatabaseTable('dionnie_tasks');
+        $tasksTable->dropTable();
     }
 
 
