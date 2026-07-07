@@ -9,8 +9,10 @@ use DionnieWPToolkit\Core\Modules\TaskTable\TasksTableModule;
 use DionnieWPToolkit\Core\Modules\ACF\ACFExtraFields;
 use DionnieWPToolkit\Core\Modules\Menus\Menus;
 use DionnieWPToolkit\Helpers\DependencyChecker;
-use DionnieWPToolkit\Core\Helpers\ViteManifestHelper;
 use DionnieWPToolkit\Helpers\DatabaseTable;
+use DionnieWPToolkit\Core\Helpers\ViteManifestHelper;
+use DionnieWPToolkit\Wp\UserBuilder\Inductee;
+
 
 class Plugin
 {
@@ -25,13 +27,24 @@ class Plugin
     public function run(): void
     {
 
-        if (defined('DIONNIE_WP_DEV_MODE') && DIONNIE_WP_DEV_MODE === true) {
+        $is_dev_mode = defined('DIONNIE_WP_DEV_MODE') && DIONNIE_WP_DEV_MODE === true;
+        $is_vite_scripts_enabled = false;
+
+        if ($is_dev_mode) {
             add_action('wp_enqueue_scripts', [$this, 'enqueue_vite_dev_scripts']);
             add_action('admin_enqueue_scripts', [$this, 'enqueue_vite_dev_scripts']);
+            $is_vite_scripts_enabled = true;
+
+            if ($is_vite_scripts_enabled) {
+                add_action('wp_enqueue_scripts', [$this, 'enqueue_public_assets']);
+                add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
+            }
+        } else {
+            add_action('wp_enqueue_scripts', [$this, 'enqueue_public_assets']);
+            add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
         }
 
         add_action('plugins_loaded', [$this, 'registerModules']);
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
     }
 
 
@@ -65,7 +78,7 @@ class Plugin
     }
 
 
-    public function enqueue_assets(): void
+    public function enqueue_public_assets(): void
     {
         $vite_helper = new ViteManifestHelper();
 
@@ -75,7 +88,6 @@ class Plugin
             'src/upholstery-previz/upholstery-previz.tsx',
             'includes/Modules/ACF/CourseBuilderField/acf-course-builder.js' => [
                 'deps'      => ['jquery', 'acf-input'],
-
             ],
             'includes/Modules/ACF/QuizChoiceField/acf-quiz-choices.js' => [
                 'deps'      => ['jquery', 'acf-input'],
@@ -84,6 +96,23 @@ class Plugin
 
         $vite_helper->enqueue($entries);
     }
+
+    public function enqueue_admin_assets(): void
+    {
+        $vite_helper = new ViteManifestHelper();
+
+        $entries = [
+            'includes/Modules/ACF/CourseBuilderField/acf-course-builder.js' => [
+                'deps'      => ['jquery', 'acf-input'],
+            ],
+            'includes/Modules/ACF/QuizChoiceField/acf-quiz-choices.js' => [
+                'deps'      => ['jquery', 'acf-input'],
+            ]
+        ];
+
+        $vite_helper->enqueue($entries);
+    }
+
 
 
     private function bootstrap_modules(): void
@@ -100,6 +129,7 @@ class Plugin
             new TasksTableModule(),
             new GoogleCalendarModule(),
             new LoginCustomizer(),
+
         ];
     }
 
