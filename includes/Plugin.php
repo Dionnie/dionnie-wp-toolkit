@@ -11,7 +11,6 @@ use DionnieWPToolkit\Core\Modules\Menus\Menus;
 use DionnieWPToolkit\Helpers\DependencyChecker;
 use DionnieWPToolkit\Helpers\DatabaseTable;
 use DionnieWPToolkit\Core\Helpers\ViteManifestHelper;
-use DionnieWPToolkit\Wp\UserBuilder\Inductee;
 
 
 class Plugin
@@ -51,6 +50,7 @@ class Plugin
         add_action('plugins_loaded', [$this, 'registerModules']);
     }
 
+    //** wp_enqueue_script_module doesnt work in the login page by default, so we need to manually print the script modules in the footer **/ 
     public function print_vite_script_modules(): void
     {
         if (function_exists('wp_script_modules')) {
@@ -66,29 +66,6 @@ class Plugin
     {
         wp_enqueue_script_module('vite-client', 'http://localhost:5173/@vite/client', [], null);
         wp_enqueue_script_module('vite-reload', 'http://localhost:5173/src/reload.js', [], null);
-    }
-
-    function activate()
-    {
-        $tasksTable = new DatabaseTable('dionnie_tasks');
-        $schema = "
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
-        title varchar(255) NOT NULL,
-        description text NOT NULL,
-        status varchar(50) DEFAULT 'pending' NOT NULL,
-        created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
-        PRIMARY KEY  (id)
-    ";
-        $tasksTable->createTable($schema);
-    }
-
-    function deactivate() {}
-
-
-    function uninstall()
-    {
-        $tasksTable = new DatabaseTable('dionnie_tasks');
-        $tasksTable->dropTable();
     }
 
     public function enqueue_login_assets(): void
@@ -163,5 +140,28 @@ class Plugin
                 $module->register();
             }
         }
+    }
+
+    function activate()
+    {
+        $tasksTable = new DatabaseTable('dionnie_tasks');
+        $schema = "
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        title varchar(255) NOT NULL,
+        description text NOT NULL,
+        status varchar(50) DEFAULT 'pending' NOT NULL,
+        created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        PRIMARY KEY  (id)
+    ";
+        $tasksTable->createTable($schema);
+    }
+
+    function deactivate() {}
+
+
+    function uninstall()
+    {
+        $tasksTable = new DatabaseTable('dionnie_tasks');
+        $tasksTable->dropTable();
     }
 }
