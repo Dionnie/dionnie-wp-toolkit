@@ -1,21 +1,6 @@
 {
-  "includes/Modules/ACF/QuizChoiceField/acf-quiz-choices.js": {
-    "file": "assets/acf-quiz-choices-CTHdaq4a.js",
-    "name": "acf-quiz-choices",
-    "src": "includes/Modules/ACF/QuizChoiceField/acf-quiz-choices.js",
-    "isEntry": true
-  },
-  "includes/Modules/LoginCustomizer/login-customizer.css": {
-    "file": "assets/login-customizer-KKnSfB53.css",
-    "name": "login-customizer",
-    "names": [
-      "login-customizer.css"
-    ],
-    "src": "includes/Modules/LoginCustomizer/login-customizer.css",
-    "isEntry": true
-  },
   "src/css/app.css": {
-    "file": "assets/app-Fh9nDnXQ.css",
+    "file": "assets/app-GSpJu5Ey.css",
     "name": "app",
     "names": [
       "app.css"
@@ -29,10 +14,19 @@
     "src": "src/js/app.js",
     "isEntry": true
   },
-  "src/upholstery-previz/upholstery-previz.tsx": {
+  "src/modules/login-customizer/login-customizer.css": {
+    "file": "assets/login-customizer-DS-QSjbb.css",
+    "name": "login-customizer",
+    "names": [
+      "login-customizer.css"
+    ],
+    "src": "src/modules/login-customizer/login-customizer.css",
+    "isEntry": true
+  },
+  "src/modules/upholstery-previz/upholstery-previz.tsx": {
     "file": "assets/upholstery-previz-D7ZdYzsP.js",
     "name": "upholstery-previz",
-    "src": "src/upholstery-previz/upholstery-previz.tsx",
+    "src": "src/modules/upholstery-previz/upholstery-previz.tsx",
     "isEntry": true
   }
 }

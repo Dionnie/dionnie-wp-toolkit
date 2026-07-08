@@ -33,25 +33,39 @@ class Plugin
         if ($is_dev_mode) {
             add_action('wp_enqueue_scripts', [$this, 'enqueue_vite_dev_scripts']);
             add_action('admin_enqueue_scripts', [$this, 'enqueue_vite_dev_scripts']);
+            add_action('login_enqueue_scripts', [$this, 'enqueue_vite_dev_scripts']);
             $is_vite_scripts_enabled = true;
 
             if ($is_vite_scripts_enabled) {
                 add_action('wp_enqueue_scripts', [$this, 'enqueue_public_assets']);
                 add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
+                add_action('login_enqueue_scripts', [$this, 'enqueue_login_assets']);
+                add_action('login_footer', [$this, 'print_vite_script_modules'], 20);
             }
         } else {
             add_action('wp_enqueue_scripts', [$this, 'enqueue_public_assets']);
             add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
+            add_action('login_enqueue_scripts', [$this, 'enqueue_login_assets']);
         }
 
         add_action('plugins_loaded', [$this, 'registerModules']);
     }
 
+    public function print_vite_script_modules(): void
+    {
+        if (function_exists('wp_script_modules')) {
+            $script_modules = wp_script_modules();
+            $script_modules->print_import_map();
+            $script_modules->print_enqueued_script_modules();
+            $script_modules->print_script_module_preloads();
+        }
+    }
+
 
     function enqueue_vite_dev_scripts()
     {
-        wp_enqueue_script_module('vite-client', 'http://localhost:5173/@vite/client');
-        wp_enqueue_script_module('vite-reload', 'http://localhost:5173/src/reload.js');
+        wp_enqueue_script_module('vite-client', 'http://localhost:5173/@vite/client', [], null);
+        wp_enqueue_script_module('vite-reload', 'http://localhost:5173/src/reload.js', [], null);
     }
 
     function activate()
@@ -77,6 +91,17 @@ class Plugin
         $tasksTable->dropTable();
     }
 
+    public function enqueue_login_assets(): void
+    {
+        $vite_helper = new ViteManifestHelper();
+
+        $entries = [
+            "src/modules/login-customizer/login-customizer.css",
+        ];
+
+        $vite_helper->enqueue($entries);
+    }
+
 
     public function enqueue_public_assets(): void
     {
@@ -85,7 +110,7 @@ class Plugin
         $entries = [
             'src/css/app.css',
             'src/js/app.js',
-            'src/upholstery-previz/upholstery-previz.tsx',
+            'src/modules/upholstery-previz/upholstery-previz.tsx',
             'includes/Modules/ACF/CourseBuilderField/acf-course-builder.js' => [
                 'deps'      => ['jquery', 'acf-input'],
             ],
@@ -105,9 +130,7 @@ class Plugin
             'includes/Modules/ACF/CourseBuilderField/acf-course-builder.js' => [
                 'deps'      => ['jquery', 'acf-input'],
             ],
-            'includes/Modules/ACF/QuizChoiceField/acf-quiz-choices.js' => [
-                'deps'      => ['jquery', 'acf-input'],
-            ]
+            'includes/Modules/ACF/QuizChoiceField/index.tsx'
         ];
 
         $vite_helper->enqueue($entries);

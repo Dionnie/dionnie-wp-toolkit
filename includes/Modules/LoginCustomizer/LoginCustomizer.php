@@ -11,11 +11,10 @@ class LoginCustomizer implements Registerable
 {
     public function register(): void
     {
-        // Enqueue custom assets via Vite
-        add_action('login_enqueue_scripts', [$this, 'enqueue_assets']);
+
 
         // Dequeue unnecessary assets to improve performance
-        add_action('login_enqueue_scripts', [$this, 'dequeue_unnecessary_assets'], 100);
+        //  add_action('login_enqueue_scripts', [$this, 'dequeue_unnecessary_assets'], 100);
 
         // Inject layout wrappers before and after the default WP login box
         add_action('login_header', [$this, 'inject_hero_section']);
@@ -25,19 +24,8 @@ class LoginCustomizer implements Registerable
         add_filter('login_message', [$this, 'inject_custom_logo']);
     }
 
-    /**
-     * Enqueue the custom CSS stylesheet via Vite to restyle standard WordPress form fields.
-     */
-    public function enqueue_assets(): void
-    {
-        $vite_helper = new ViteManifestHelper();
 
-        $entries = [
-            'includes/Modules/LoginCustomizer/login-customizer.css',
-        ];
 
-        $vite_helper->enqueue($entries);
-    }
 
     /**
      * Dequeue unnecessary scripts and styles to improve page load speed based on Lighthouse recommendations.
