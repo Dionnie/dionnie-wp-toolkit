@@ -59,7 +59,7 @@ class LoginCustomizer implements Registerable
     public function inject_hero_section(): void
     {
         $action = $_GET['action'] ?? 'login';
-        $hero_title = __('Welcome Back', 'dionnie-wp');
+        $hero_title = __('Welcome Back Awesome!!', 'dionnie-wp');
         $hero_subtitle = __('Your journey continues here. Log in to access your dashboard and manage your site.', 'dionnie-wp');
 
         if ($action === 'register') {

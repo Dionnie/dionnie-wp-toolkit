@@ -22,7 +22,7 @@ html body.login {
   width: 100%;
   max-width: 1000px;
   min-height: 600px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(20px) saturate(1.5);
   -webkit-backdrop-filter: blur(20px) saturate(1.5);
   border-radius: 20px;
