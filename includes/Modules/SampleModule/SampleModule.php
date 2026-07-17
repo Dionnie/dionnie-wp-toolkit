@@ -1,8 +1,8 @@
 <?php
 
-namespace BaboonWP\Core\Modules\SampleModule;
+namespace DionnieWPToolkitWP\Core\Modules\SampleModule;
 
-use BaboonWP\Core\Interfaces\Registerable;
+use DionnieWPToolkitWP\Core\Interfaces\Registerable;
 
 class SampleModule implements Registerable
 {

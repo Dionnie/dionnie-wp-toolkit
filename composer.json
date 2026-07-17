@@ -1,13 +1,13 @@
 {
-    "name": "baboon-wp/boilderplate-plugin",
+    "name": "dionnie-wp-toolkit/boilerplate-plugin",
     "description": "A boilerplate plugin for WordPress development powered by Vite.",
     "type": "project",
     "autoload": {
         "psr-4": {
-            "BaboonWP\\Wp\\": "src/",
-            "BaboonWP\\Modules\\": "modules/",
-            "BaboonWP\\Helpers\\": "includes/helpers/",
-            "BaboonWP\\Core\\": "includes/"
+            "DionnieWPToolkitWP\\Wp\\": "src/",
+            "DionnieWPToolkitWP\\Modules\\": "modules/",
+            "DionnieWPToolkitWP\\Helpers\\": "includes/helpers/",
+            "DionnieWPToolkitWP\\Core\\": "includes/"
         }
     },
     "authors": [

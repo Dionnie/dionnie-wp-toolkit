@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BaboonWP\Helpers;
+namespace DionnieWPToolkitWP\Helpers;
 
 class Views
 {

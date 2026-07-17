@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BaboonWP\Core\Helpers;
+namespace DionnieWPToolkitWP\Core\Helpers;
 
 class ViteManifestHelper
 {
@@ -32,7 +32,7 @@ class ViteManifestHelper
 
     private function isDevMode(): bool
     {
-        return file_exists(rtrim(BABOON_WP_PATH, '/') . '/public/hot');
+        return file_exists(rtrim(DIONNIE_WP_TOOLKIT_WP_PATH, '/') . '/public/hot');
     }
 
 
@@ -61,7 +61,7 @@ class ViteManifestHelper
 
     private function enqueueForProduction(array $entries): void
     {
-        $manifestPath = rtrim(BABOON_WP_PATH, '/') . '/public/build/manifest.json';
+        $manifestPath = rtrim(DIONNIE_WP_TOOLKIT_WP_PATH, '/') . '/public/build/manifest.json';
 
         if (!file_exists($manifestPath)) {
             return;
@@ -72,7 +72,7 @@ class ViteManifestHelper
             return;
         }
 
-        $assetsUrl = rtrim(BABOON_WP_URL, '/') . '/public/build/';
+        $assetsUrl = rtrim(DIONNIE_WP_TOOLKIT_WP_URL, '/') . '/public/build/';
 
         foreach ($entries as $entryKey => $config) {
             $options  = is_array($config) ? $config : [];
@@ -100,12 +100,12 @@ class ViteManifestHelper
             }
 
             if (preg_match('/\.(js|jsx|ts|tsx)$/', $fileKey)) {
-                wp_enqueue_script($handle, $fileUrl, $deps, BABOON_WP_VERSION, $inFooter);
+                wp_enqueue_script($handle, $fileUrl, $deps, DIONNIE_WP_TOOLKIT_WP_VERSION, $inFooter);
 
                 if (!empty($asset['css']) && is_array($asset['css'])) {
                     foreach ($asset['css'] as $index => $cssFile) {
                         $cssHandle = $handle . '-css-' . (string)$index;
-                        wp_enqueue_style($cssHandle, $assetsUrl . ltrim($cssFile, '/'), [], BABOON_WP_VERSION);
+                        wp_enqueue_style($cssHandle, $assetsUrl . ltrim($cssFile, '/'), [], DIONNIE_WP_TOOLKIT_WP_VERSION);
                     }
                 }
             }
@@ -117,6 +117,6 @@ class ViteManifestHelper
         $filename  = basename($entryKey);
         $cleanName = (string) preg_replace('/\.(css|scss|sass|js|jsx|ts|tsx)$/', '', $filename);
 
-        return BABOON_WP_SLUG . '-' . sanitize_title($cleanName);
+        return DIONNIE_WP_TOOLKIT_WP_SLUG . '-' . sanitize_title($cleanName);
     }
 }

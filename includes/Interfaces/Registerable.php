@@ -1,6 +1,6 @@
 <?php
 
-namespace BaboonWP\Core\Interfaces;
+namespace DionnieWPToolkitWP\Core\Interfaces;
 
 interface Registerable
 {

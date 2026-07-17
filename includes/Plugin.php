@@ -1,11 +1,11 @@
 <?php
 
-namespace BaboonWP\Core;
+namespace DionnieWPToolkitWP\Core;
 
-use BaboonWP\Core\Interfaces\Registerable;
-use BaboonWP\Core\Modules\SampleModule\SampleModule;
-use BaboonWP\Helpers\DependencyChecker;
-use BaboonWP\Core\Helpers\ViteManifestHelper;
+use DionnieWPToolkitWP\Core\Interfaces\Registerable;
+use DionnieWPToolkitWP\Core\Modules\SampleModule\SampleModule;
+use DionnieWPToolkitWP\Helpers\DependencyChecker;
+use DionnieWPToolkitWP\Core\Helpers\ViteManifestHelper;
 
 
 class Plugin
@@ -21,7 +21,7 @@ class Plugin
     public function run(): void
     {
 
-        $is_dev_mode = defined('BABOON_WP_DEV_MODE') && BABOON_WP_DEV_MODE === true;
+        $is_dev_mode = defined('DIONNIE_WP_TOOLKIT_WP_DEV_MODE') && DIONNIE_WP_TOOLKIT_WP_DEV_MODE === true;
         $is_vite_scripts_enabled = false;
 
         if ($is_dev_mode) {
@@ -100,7 +100,7 @@ class Plugin
     {
         $this->modules = [
             new DependencyChecker(
-                BABOON_WP_NAME,
+                DIONNIE_WP_TOOLKIT_WP_NAME,
                 [
                     'Secure Custom Fields' => 'secure-custom-fields/secure-custom-fields.php'
                 ]

@@ -22,7 +22,6 @@ function generateVariations(name) {
       .replace(/(^_|_$)/g, ""),
     pascalCase: cleanName
       .split(/[^a-zA-Z0-9]+/)
-      // We removed .toLowerCase() here so it preserves caps like "WP" and "V3" perfectly
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(""),
   };
@@ -105,9 +104,11 @@ rl.question(
       const current = generateVariations(currentInput);
       const replacement = generateVariations(newInput);
 
+      // Force the replacement name to have zero spaces
+      const replacementNameNoSpaces = replacement.name.replace(/\s+/g, "");
+
       // Map the current strings dynamically to the new strings
       const replacements = [
-        // Order is important: Do the PascalCase and Constants first to prevent partial overlaps
         {
           find: new RegExp(escapeRegExp(current.pascalCase), "g"),
           replace: replacement.pascalCase,
@@ -116,9 +117,10 @@ rl.question(
           find: new RegExp(escapeRegExp(current.constant), "g"),
           replace: replacement.constant,
         },
+        // Replaces the spaced version with the strict no-space version
         {
           find: new RegExp(escapeRegExp(current.name), "g"),
-          replace: replacement.name,
+          replace: replacementNameNoSpaces,
         },
         {
           find: new RegExp(escapeRegExp(current.slug), "g"),
@@ -129,7 +131,9 @@ rl.question(
       console.log(`\n\x1b[36mReplacing across project:\x1b[0m`);
       console.log(`- "${current.pascalCase}" -> "${replacement.pascalCase}"`);
       console.log(`- "${current.constant}" -> "${replacement.constant}"`);
-      console.log(`- "${current.name}" -> "${replacement.name}"`);
+      console.log(
+        `- "${current.name}" -> "${replacementNameNoSpaces}" \x1b[33m(Spaces stripped)\x1b[0m`,
+      );
       console.log(`- "${current.slug}" -> "${replacement.slug}"\n`);
 
       // Execute the replacements and file renaming
@@ -137,7 +141,8 @@ rl.question(
 
       console.log(
         "\n\x1b[32m%s\x1b[0m",
-        "Success! All strings and filenames have been replaced.",
+        "Success! All strings and filenames have been replaced with no spaces allowed.",
+        "If using composer, run 'composer dump-autoload' to refresh the autoloader.",
       );
       rl.close();
     });
