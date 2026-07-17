@@ -3,13 +3,8 @@
 namespace DionnieWPToolkit\Core;
 
 use DionnieWPToolkit\Core\Interfaces\Registerable;
-use DionnieWPToolkit\Core\Modules\GoogleCalendar\GoogleCalendarModule;
-use DionnieWPToolkit\Core\Modules\LoginCustomizer\LoginCustomizer;
-use DionnieWPToolkit\Core\Modules\TaskTable\TasksTableModule;
-use DionnieWPToolkit\Core\Modules\ACF\ACFExtraFields;
-use DionnieWPToolkit\Core\Modules\Menus\Menus;
+use DionnieWPToolkit\Core\Modules\SampleModule\SampleModule;
 use DionnieWPToolkit\Helpers\DependencyChecker;
-use DionnieWPToolkit\Helpers\DatabaseTable;
 use DionnieWPToolkit\Core\Helpers\ViteManifestHelper;
 
 
@@ -26,7 +21,7 @@ class Plugin
     public function run(): void
     {
 
-        $is_dev_mode = defined('DIONNIE_WP_DEV_MODE') && DIONNIE_WP_DEV_MODE === true;
+        $is_dev_mode = defined('DIONNIE_WP_TOOLKIT_DEV_MODE') && DIONNIE_WP_TOOLKIT_DEV_MODE === true;
         $is_vite_scripts_enabled = false;
 
         if ($is_dev_mode) {
@@ -72,9 +67,7 @@ class Plugin
     {
         $vite_helper = new ViteManifestHelper();
 
-        $entries = [
-            "src/modules/login-customizer/login-customizer.css",
-        ];
+        $entries = [];
 
         $vite_helper->enqueue($entries);
     }
@@ -87,13 +80,6 @@ class Plugin
         $entries = [
             'src/css/app.css',
             'src/js/app.js',
-            'src/modules/upholstery-previz/upholstery-previz.tsx',
-            'includes/Modules/ACF/CourseBuilderField/acf-course-builder.js' => [
-                'deps'      => ['jquery', 'acf-input'],
-            ],
-            'includes/Modules/ACF/QuizChoiceField/acf-quiz-choices.js' => [
-                'deps'      => ['jquery', 'acf-input'],
-            ]
         ];
 
         $vite_helper->enqueue($entries);
@@ -103,12 +89,7 @@ class Plugin
     {
         $vite_helper = new ViteManifestHelper();
 
-        $entries = [
-            'includes/Modules/ACF/CourseBuilderField/acf-course-builder.js' => [
-                'deps'      => ['jquery', 'acf-input'],
-            ],
-            'includes/Modules/ACF/QuizChoiceField/index.tsx'
-        ];
+        $entries = [];
 
         $vite_helper->enqueue($entries);
     }
@@ -119,17 +100,12 @@ class Plugin
     {
         $this->modules = [
             new DependencyChecker(
-                DIONNIE_WP_NAME,
+                DIONNIE_WP_TOOLKIT_NAME,
                 [
                     'Secure Custom Fields' => 'secure-custom-fields/secure-custom-fields.php'
                 ]
             ),
-            new Menus('dionnie-toolkit'),
-            new ACFExtraFields(),
-            new TasksTableModule(),
-            new GoogleCalendarModule(),
-            new LoginCustomizer(),
-
+            new SampleModule(),
         ];
     }
 
@@ -142,26 +118,10 @@ class Plugin
         }
     }
 
-    function activate()
-    {
-        $tasksTable = new DatabaseTable('dionnie_tasks');
-        $schema = "
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
-        title varchar(255) NOT NULL,
-        description text NOT NULL,
-        status varchar(50) DEFAULT 'pending' NOT NULL,
-        created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
-        PRIMARY KEY  (id)
-    ";
-        $tasksTable->createTable($schema);
-    }
+    function activate() {}
 
     function deactivate() {}
 
 
-    function uninstall()
-    {
-        $tasksTable = new DatabaseTable('dionnie_tasks');
-        $tasksTable->dropTable();
-    }
+    function uninstall() {}
 }

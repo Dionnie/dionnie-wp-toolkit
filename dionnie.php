@@ -18,15 +18,15 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-define('DIONNIE_WP_NAME', 'Dionnie WP Toolkit');
-define('DIONNIE_WP_VERSION', '1.0.0');
-define('DIONNIE_WP_SLUG', 'dionnie-wp-toolkit');
-define('DIONNIE_WP_TEXT_DOMAIN', 'dionnie-wp-toolkit');
-define('DIONNIE_WP_PATH', plugin_dir_path(__FILE__));
-define('DIONNIE_WP_URL', plugin_dir_url(__FILE__));
+define('DIONNIE_WP_TOOLKIT_NAME', 'Dionnie WP Toolkit');
+define('DIONNIE_WP_TOOLKIT_VERSION', '1.0.0');
+define('DIONNIE_WP_TOOLKIT_SLUG', 'dionnie-wp-toolkit');
+define('DIONNIE_WP_TOOLKIT_TEXT_DOMAIN', 'dionnie-wp-toolkit');
+define('DIONNIE_WP_TOOLKIT_PATH', plugin_dir_path(__FILE__));
+define('DIONNIE_WP_TOOLKIT_URL', plugin_dir_url(__FILE__));
 
-if (!defined('DIONNIE_WP_DEV_MODE')) {
-    define('DIONNIE_WP_DEV_MODE', file_exists(DIONNIE_WP_PATH . 'public/hot'));
+if (!defined('DIONNIE_WP_TOOLKIT_DEV_MODE')) {
+    define('DIONNIE_WP_TOOLKIT_DEV_MODE', file_exists(DIONNIE_WP_TOOLKIT_PATH . 'public/hot'));
 }
 
 $plugin = new \DionnieWPToolkit\Core\Plugin();

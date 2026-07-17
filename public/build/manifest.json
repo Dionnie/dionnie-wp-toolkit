@@ -1,6 +1,6 @@
 {
   "src/css/app.css": {
-    "file": "assets/app-GSpJu5Ey.css",
+    "file": "assets/app-Cr5l9uIM.css",
     "name": "app",
     "names": [
       "app.css"
@@ -9,24 +9,9 @@
     "isEntry": true
   },
   "src/js/app.js": {
-    "file": "assets/app-D18EqzA1.js",
+    "file": "assets/app-DCvIcySI.js",
     "name": "app",
     "src": "src/js/app.js",
-    "isEntry": true
-  },
-  "src/modules/login-customizer/login-customizer.css": {
-    "file": "assets/login-customizer-LW7Z3n-o.css",
-    "name": "login-customizer",
-    "names": [
-      "login-customizer.css"
-    ],
-    "src": "src/modules/login-customizer/login-customizer.css",
-    "isEntry": true
-  },
-  "src/modules/upholstery-previz/upholstery-previz.tsx": {
-    "file": "assets/upholstery-previz-D7ZdYzsP.js",
-    "name": "upholstery-previz",
-    "src": "src/modules/upholstery-previz/upholstery-previz.tsx",
     "isEntry": true
   }
 }

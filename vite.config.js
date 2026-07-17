@@ -16,12 +16,7 @@ export default defineConfig(() => {
 
     plugins: [
       laravel({
-        input: [
-          "src/css/app.css",
-          "src/js/app.js",
-          "src/modules/login-customizer/login-customizer.css",
-          "src/modules/upholstery-previz/upholstery-previz.tsx",
-        ],
+        input: ["src/css/app.css", "src/js/app.js"],
         refresh: ["**/*.php"],
       }),
 
