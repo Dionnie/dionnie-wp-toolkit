@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DionnieWPToolkit\Helpers;
+namespace BaboonWP\Helpers;
 
-use DionnieWPToolkit\Core\Interfaces\Registerable;
+use BaboonWP\Core\Interfaces\Registerable;
 
 class DependencyChecker implements Registerable
 {

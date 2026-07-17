@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * Plugin Name: Baboon WP
+ * Description: A boilerplate plugin for WordPress development powered by Vite.
+ * Version: 1.0
+ * Author: Mark Dionnie Bulingit
+ */
+
+declare(strict_types=1);
+
+
+if (! defined('ABSPATH')) {
+    exit;
+}
+
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
+}
+
+define('BABOON_WP_NAME', 'Baboon WP');
+define('BABOON_WP_VERSION', '1.0.0');
+define('BABOON_WP_SLUG', 'baboon-wp');
+define('BABOON_WP_TEXT_DOMAIN', 'baboon-wp');
+define('BABOON_WP_PATH', plugin_dir_path(__FILE__));
+define('BABOON_WP_URL', plugin_dir_url(__FILE__));
+
+if (!defined('BABOON_WP_DEV_MODE')) {
+    define('BABOON_WP_DEV_MODE', file_exists(BABOON_WP_PATH . 'public/hot'));
+}
+
+$plugin = new \BaboonWP\Core\Plugin();
+$plugin->run();
+
+
+register_activation_hook(__FILE__, [$plugin, 'activate']);
+register_deactivation_hook(__FILE__, [$plugin, 'deactivate']);

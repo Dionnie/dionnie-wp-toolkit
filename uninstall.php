@@ -11,5 +11,5 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-$plugin = new \DionnieWPToolkit\Core\Plugin();
+$plugin = new \BaboonWP\Core\Plugin();
 $plugin->uninstall();

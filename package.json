@@ -1,7 +1,7 @@
 {
-  "name": "newewewewe",
+  "name": "baboon-wp",
   "version": "1.0.0",
-  "description": "",
+  "description": "A boilerplate plugin for WordPress development powered by Vite.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
