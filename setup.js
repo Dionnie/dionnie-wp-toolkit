@@ -80,7 +80,7 @@ function processDirectory(directory, replacements, currentSlug, newSlug) {
 
 // Start the interactive prompts
 rl.question(
-  "\x1b[33mEnter the CURRENT plugin name (e.g., Dionnie WP Toolkit):\x1b[0m ",
+  "\x1b[33mEnter the CURRENT plugin name (e.g., DionnieWPToolkit):\x1b[0m ",
   (currentInput) => {
     if (!currentInput.trim()) {
       console.error(
