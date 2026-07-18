@@ -1,4 +1,4 @@
-# DionnieWPToolkit WP
+# DionnieWPToolkit
 
 A modern, high-performance WordPress plugin boilerplate. This repository serves as a GitHub Template to quickly spawn new, clean plugin projects without carrying over commit history or experimental work-in-progress code.
 
@@ -27,28 +27,10 @@ cd your-new-repo
 
 This boilerplate includes a self-destructing Node.js script that automatically renames all namespaces, text domains, constants, and filenames to match your new project.
 
-In your terminal, run the following command (replace `"DionnieWPToolkit WP"` with your actual plugin name):
+In your terminal, run the following command (replace `"DionnieWPToolkit"` with your actual plugin name):
 
 ```bash
-node setup.js "DionnieWPToolkit WP"
-```
-
-**What this script does in under a second:**
-
-- Replaces `DionnieWPToolkit WP` with `DionnieWPToolkit WP`
-- Replaces `dionnie-wp-toolkit-wp` with `dionnie-wp-toolkit-wp`
-- Replaces `DIONNIE_WP_TOOLKIT_WP` with `DIONNIE_WP_TOOLKIT_WP`
-- Replaces `DionnieWPToolkit WP` with `DionnieWPToolkit WP`
-- Renames the main file `dionnie-wp-toolkit-wp.php` to `dionnie-wp-toolkit-wp.php`
-- Automatically deletes `setup.js` after execution to keep your repository clean.
-
-### 4. Install Dependencies
-
-Once the setup script has finished and deleted itself, install your dependencies to finalize the setup:
-
-```bash
-npm install
-composer install
+node setup.js "DionnieWPToolkit"
 ```
 
 ## 🛠️ Development
