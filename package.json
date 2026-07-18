@@ -1,5 +1,5 @@
 {
-  "name": "dionnie-wp-toolkit",
+  "name": "dionnie-boilerplate-plugin",
   "version": "1.0.0",
   "description": "A boilerplate plugin for WordPress development powered by Vite.",
   "scripts": {

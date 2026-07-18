@@ -1,11 +1,11 @@
 <?php
 
-namespace DionnieWPToolkitWP;
+namespace DionnieBoilerplatePlugin;
 
-use DionnieWPToolkitWP\Registerable;
-use DionnieWPToolkitWP\Modules\SampleModule\SampleModule;
-use DionnieWPToolkitWP\Helpers\DependencyChecker;
-use DionnieWPToolkitWP\Helpers\ViteManifestHelper;
+use DionnieBoilerplatePlugin\Registerable;
+use DionnieBoilerplatePlugin\Modules\SampleModule\SampleModule;
+use DionnieBoilerplatePlugin\Helpers\DependencyChecker;
+use DionnieBoilerplatePlugin\Helpers\ViteManifestHelper;
 
 
 class Plugin
@@ -21,7 +21,7 @@ class Plugin
     public function run(): void
     {
 
-        $is_dev_mode = defined('DIONNIE_WP_TOOLKIT_WP_DEV_MODE') && DIONNIE_WP_TOOLKIT_WP_DEV_MODE === true;
+        $is_dev_mode = defined('DIONNIE_BOILERPLATE_PLUGIN_DEV_MODE') && DIONNIE_BOILERPLATE_PLUGIN_DEV_MODE === true;
         $is_vite_scripts_enabled = false;
 
         if ($is_dev_mode) {
@@ -101,7 +101,7 @@ class Plugin
     {
         $this->modules = [
             new DependencyChecker(
-                DIONNIE_WP_TOOLKIT_WP_NAME,
+                DIONNIE_BOILERPLATE_PLUGIN_NAME,
                 [
                     'Secure Custom Fields' => 'secure-custom-fields/secure-custom-fields.php'
                 ]

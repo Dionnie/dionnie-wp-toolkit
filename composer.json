@@ -1,10 +1,10 @@
 {
-    "name": "dionnie-wp-toolkit/boilerplate-plugin",
+    "name": "dionnie/dionnie-boilerplate-plugin",
     "description": "A boilerplate plugin for WordPress development powered by Vite.",
     "type": "project",
     "autoload": {
         "psr-4": {
-            "DionnieWPToolkitWP\\": "includes/"
+            "DionnieBoilerplatePlugin\\": "includes/"
         }
     },
     "authors": [

@@ -1,8 +1,8 @@
 <?php
 
-namespace DionnieWPToolkitWP\Modules\SampleModule;
+namespace DionnieBoilerplatePlugin\Modules\SampleModule;
 
-use DionnieWPToolkitWP\Registerable;
+use DionnieBoilerplatePlugin\Registerable;
 
 class SampleModule implements Registerable
 {

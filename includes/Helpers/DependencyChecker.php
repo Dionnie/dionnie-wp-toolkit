@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DionnieWPToolkitWP\Helpers;
+namespace DionnieBoilerplatePlugin\Helpers;
 
-use DionnieWPToolkitWP\Registerable;
+use DionnieBoilerplatePlugin\Registerable;
 
 class DependencyChecker implements Registerable
 {
@@ -89,7 +89,7 @@ class DependencyChecker implements Registerable
             sprintf(
                 __(
                     '<strong>%1$s</strong> requires: %2$s',
-                    'dionnie-wp'
+                    'dionnie-boilerplate-plugin'
                 ),
                 esc_html($this->plugin_name),
                 $plugins
