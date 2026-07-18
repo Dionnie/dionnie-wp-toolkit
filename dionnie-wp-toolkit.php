@@ -29,9 +29,8 @@ if (!defined('DIONNIE_WP_TOOLKIT_WP_DEV_MODE')) {
     define('DIONNIE_WP_TOOLKIT_WP_DEV_MODE', file_exists(DIONNIE_WP_TOOLKIT_WP_PATH . 'public/hot'));
 }
 
-$plugin = new \DionnieWPToolkitWP\Core\Plugin();
+$plugin = new \DionnieWPToolkitWP\Plugin();
 $plugin->run();
-
 
 register_activation_hook(__FILE__, [$plugin, 'activate']);
 register_deactivation_hook(__FILE__, [$plugin, 'deactivate']);

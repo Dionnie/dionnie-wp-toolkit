@@ -1,11 +1,11 @@
 <?php
 
-namespace DionnieWPToolkitWP\Core;
+namespace DionnieWPToolkitWP;
 
-use DionnieWPToolkitWP\Core\Interfaces\Registerable;
-use DionnieWPToolkitWP\Core\Modules\SampleModule\SampleModule;
+use DionnieWPToolkitWP\Interfaces\Registerable;
+use DionnieWPToolkitWP\Modules\SampleModule\SampleModule;
 use DionnieWPToolkitWP\Helpers\DependencyChecker;
-use DionnieWPToolkitWP\Core\Helpers\ViteManifestHelper;
+use DionnieWPToolkitWP\Helpers\ViteManifestHelper;
 
 
 class Plugin
@@ -45,7 +45,8 @@ class Plugin
         add_action('plugins_loaded', [$this, 'registerModules']);
     }
 
-    //** wp_enqueue_script_module doesnt work in the login page by default, so we need to manually print the script modules in the footer **/ 
+    //** wp_enqueue_script_module doesnt work in the login page by default, 
+    //   so we need to manually print the script modules in the footer **/ 
     public function print_vite_script_modules(): void
     {
         if (function_exists('wp_script_modules')) {
@@ -121,7 +122,6 @@ class Plugin
     function activate() {}
 
     function deactivate() {}
-
 
     function uninstall() {}
 }

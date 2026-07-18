@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DionnieWPToolkitWP\Core\Helpers;
+namespace DionnieWPToolkitWP\Helpers;
 
 class ViteManifestHelper
 {

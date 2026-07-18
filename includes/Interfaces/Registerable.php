@@ -1,6 +1,6 @@
 <?php
 
-namespace DionnieWPToolkitWP\Core\Interfaces;
+namespace DionnieWPToolkitWP\Interfaces;
 
 interface Registerable
 {
