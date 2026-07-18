@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DionnieWPToolkitWP\Helpers;
 
-use DionnieWPToolkitWP\Interfaces\Registerable;
+use DionnieWPToolkitWP\Registerable;
 
 class DependencyChecker implements Registerable
 {

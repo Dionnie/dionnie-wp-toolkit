@@ -2,7 +2,7 @@
 
 namespace DionnieWPToolkitWP;
 
-use DionnieWPToolkitWP\Interfaces\Registerable;
+use DionnieWPToolkitWP\Registerable;
 use DionnieWPToolkitWP\Modules\SampleModule\SampleModule;
 use DionnieWPToolkitWP\Helpers\DependencyChecker;
 use DionnieWPToolkitWP\Helpers\ViteManifestHelper;

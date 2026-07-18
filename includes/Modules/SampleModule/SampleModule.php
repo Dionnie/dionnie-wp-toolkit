@@ -2,7 +2,7 @@
 
 namespace DionnieWPToolkitWP\Modules\SampleModule;
 
-use DionnieWPToolkitWP\Interfaces\Registerable;
+use DionnieWPToolkitWP\Registerable;
 
 class SampleModule implements Registerable
 {
