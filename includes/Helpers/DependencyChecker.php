@@ -4,55 +4,59 @@ declare(strict_types=1);
 
 namespace DionnieBoilerplatePlugin\Helpers;
 
-use DionnieBoilerplatePlugin\Registerable;
-
-class DependencyChecker implements Registerable
+class DependencyChecker
 {
     private string $plugin_name;
+    private string $plugin_file;
     private array $required_plugins;
     private array $missing_plugins = [];
 
     public function __construct(
         string $plugin_name,
+        string $plugin_file,
         array $required_plugins
     ) {
         $this->plugin_name = $plugin_name;
+        $this->plugin_file = $plugin_file;
         $this->required_plugins = $required_plugins;
     }
 
     /**
-     * Register hooks.
+     * Synchronously checks if dependencies are missing.
      */
-    public function register(): void
+    public function has_missing_dependencies(): bool
+    {
+        $this->missing_plugins = $this->get_missing_dependencies();
+
+        return !empty($this->missing_plugins);
+    }
+
+    /**
+     * Registers the hooks to deactivate the plugin and show the error.
+     */
+    public function handle_missing_dependencies(): void
     {
         if (!is_admin()) {
             return;
         }
 
-        add_action(
-            'admin_init',
-            [$this, 'check_dependencies']
-        );
+        add_action('admin_init', [$this, 'deactivate_and_notify']);
     }
 
     /**
-     * Check dependencies.
+     * Safely deactivates the plugin and queues the admin notice.
      */
-    public function check_dependencies(): void
+    public function deactivate_and_notify(): void
     {
-        $this->missing_plugins = $this->get_missing_dependencies();
+        deactivate_plugins(plugin_basename($this->plugin_file));
 
-        if (!empty($this->missing_plugins)) {
-            add_action(
-                'admin_notices',
-                [$this, 'display_admin_notice']
-            );
+        if (isset($_GET['activate'])) {
+            unset($_GET['activate']);
         }
+
+        add_action('admin_notices', [$this, 'display_admin_notice']);
     }
 
-    /**
-     * Get missing plugins.
-     */
     private function get_missing_dependencies(): array
     {
         if (!function_exists('is_plugin_active')) {
@@ -70,27 +74,18 @@ class DependencyChecker implements Registerable
         return $missing;
     }
 
-    /**
-     * Display admin notice.
-     */
     public function display_admin_notice(): void
     {
         if (empty($this->missing_plugins)) {
             return;
         }
 
-        $plugins = implode(
-            ', ',
-            array_map('esc_html', $this->missing_plugins)
-        );
+        $plugins = implode(', ', array_map('esc_html', $this->missing_plugins));
 
         printf(
             '<div class="notice notice-error"><p>%s</p></div>',
             sprintf(
-                __(
-                    '<strong>%1$s</strong> requires: %2$s',
-                    'dionnie-boilerplate-plugin'
-                ),
+                __('<strong>%1$s</strong> requires: %2$s', 'dionnie-boilerplate-plugin'),
                 esc_html($this->plugin_name),
                 $plugins
             )

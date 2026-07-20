@@ -13,28 +13,43 @@ class Plugin
 
     public function __construct()
     {
-
         $this->bootstrap_modules();
     }
 
     public function run(): void
     {
-        // 1. Simplify enqueue logic
+        // 1. Core Infrastructure & Lifecycle Gatekeeper
+        $dependency_checker = new DependencyChecker(
+            DIONNIE_BOILERPLATE_PLUGIN_NAME,
+            DIONNIE_BOILERPLATE_PLUGIN_FILE,
+            [
+                'Elementor' => 'elementor/elementor.php',
+                'Elementor Pro' => 'elementor-pro/elementor-pro.php'
+            ]
+        );
+
+        if ($dependency_checker->has_missing_dependencies()) {
+            // Trigger shutdown and exit the run method immediately.
+            $dependency_checker->handle_missing_dependencies();
+            return;
+        }
+
+        // 2. Standard Lifecycle Hooks (Only reached if dependencies are met)
+        register_activation_hook(DIONNIE_BOILERPLATE_PLUGIN_FILE, [$this, 'activate']);
+        register_deactivation_hook(DIONNIE_BOILERPLATE_PLUGIN_FILE, [$this, 'deactivate']);
+        register_uninstall_hook(DIONNIE_BOILERPLATE_PLUGIN_FILE, [self::class, 'uninstall']);
+
+        // 3. Assets Enqueueing
         if (defined('DIONNIE_BOILERPLATE_PLUGIN_DEV_MODE') && DIONNIE_BOILERPLATE_PLUGIN_DEV_MODE === true) {
             add_action('wp_enqueue_scripts', [$this, 'enqueue_vite_dev_scripts']);
             add_action('admin_enqueue_scripts', [$this, 'enqueue_vite_dev_scripts']);
         }
 
-        // Public and Admin assets are enqueued regardless of dev mode
         add_action('wp_enqueue_scripts', [$this, 'enqueue_public_assets']);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
 
+        // 4. Business Logic Modules (Now safely protected!)
         add_action('plugins_loaded', [$this, 'register_modules']);
-
-        // 2. Use the main plugin file for activation hooks
-        register_activation_hook(DIONNIE_BOILERPLATE_PLUGIN_FILE, [$this, 'activate']);
-        register_deactivation_hook(DIONNIE_BOILERPLATE_PLUGIN_FILE, [$this, 'deactivate']);
-        register_uninstall_hook(DIONNIE_BOILERPLATE_PLUGIN_FILE, [self::class, 'uninstall']);
     }
 
     public function enqueue_vite_dev_scripts(): void
@@ -58,22 +73,13 @@ class Plugin
     public function enqueue_admin_assets(): void
     {
         $vite_helper = new ViteManifestHelper();
-
         $entries = [];
-
         $vite_helper->enqueue($entries);
     }
 
     private function bootstrap_modules(): void
     {
         $this->modules = [
-            /* new DependencyChecker(
-                DIONNIE_BOILERPLATE_PLUGIN_NAME,
-                [
-                    'Elementor' => 'elementor/elementor.php',
-                    'Elementor Pro' => 'elementor-pro/elementor-pro.php'
-                ]
-            ),*/
             new SampleModule(),
         ];
     }
@@ -91,6 +97,5 @@ class Plugin
 
     public function deactivate(): void {}
 
-    // 3. Uninstall hook MUST be a static method
     public static function uninstall(): void {}
 }
