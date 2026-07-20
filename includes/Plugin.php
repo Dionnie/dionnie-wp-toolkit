@@ -3,9 +3,10 @@
 namespace DionnieBoilerplatePlugin;
 
 use DionnieBoilerplatePlugin\Registerable;
-use DionnieBoilerplatePlugin\Modules\SampleModule\SampleModule;
 use DionnieBoilerplatePlugin\Helpers\DependencyChecker;
 use DionnieBoilerplatePlugin\Helpers\ViteManifestHelper;
+
+use DionnieBoilerplatePlugin\Modules\SampleModule\SampleModule;
 
 
 class Plugin
@@ -27,35 +28,21 @@ class Plugin
         if ($is_dev_mode) {
             add_action('wp_enqueue_scripts', [$this, 'enqueue_vite_dev_scripts']);
             add_action('admin_enqueue_scripts', [$this, 'enqueue_vite_dev_scripts']);
-            add_action('login_enqueue_scripts', [$this, 'enqueue_vite_dev_scripts']);
+
             $is_vite_scripts_enabled = true;
 
             if ($is_vite_scripts_enabled) {
                 add_action('wp_enqueue_scripts', [$this, 'enqueue_public_assets']);
                 add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
-                add_action('login_enqueue_scripts', [$this, 'enqueue_login_assets']);
-                add_action('login_footer', [$this, 'print_vite_script_modules'], 20);
             }
         } else {
             add_action('wp_enqueue_scripts', [$this, 'enqueue_public_assets']);
             add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
-            add_action('login_enqueue_scripts', [$this, 'enqueue_login_assets']);
         }
 
         add_action('plugins_loaded', [$this, 'registerModules']);
     }
 
-    //** wp_enqueue_script_module doesnt work in the login page by default, 
-    //   so we need to manually print the script modules in the footer **/ 
-    public function print_vite_script_modules(): void
-    {
-        if (function_exists('wp_script_modules')) {
-            $script_modules = wp_script_modules();
-            $script_modules->print_import_map();
-            $script_modules->print_enqueued_script_modules();
-            $script_modules->print_script_module_preloads();
-        }
-    }
 
 
     function enqueue_vite_dev_scripts()
@@ -64,14 +51,6 @@ class Plugin
         wp_enqueue_script_module('vite-reload', 'http://localhost:5173/src/reload.js', [], null);
     }
 
-    public function enqueue_login_assets(): void
-    {
-        $vite_helper = new ViteManifestHelper();
-
-        $entries = [];
-
-        $vite_helper->enqueue($entries);
-    }
 
 
     public function enqueue_public_assets(): void
@@ -95,15 +74,14 @@ class Plugin
         $vite_helper->enqueue($entries);
     }
 
-
-
     private function bootstrap_modules(): void
     {
         $this->modules = [
             new DependencyChecker(
                 DIONNIE_BOILERPLATE_PLUGIN_NAME,
                 [
-                    'Secure Custom Fields' => 'secure-custom-fields/secure-custom-fields.php'
+                    'Elementor' => 'elementor/elementor.php',
+                    'Elementor Pro' => 'elementor-pro/elementor-pro.php'
                 ]
             ),
             new SampleModule(),
