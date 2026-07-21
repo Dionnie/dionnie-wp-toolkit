@@ -6,7 +6,6 @@ namespace DionnieBoilerplatePlugin\Helpers;
 
 class Views
 {
-
     /**
      * Renders a template file and returns the HTML as a string.
      *

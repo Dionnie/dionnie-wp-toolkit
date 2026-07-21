@@ -4,17 +4,34 @@ declare(strict_types=1);
 
 namespace DionnieBoilerplatePlugin\Helpers;
 
-class ViteManifestHelper
+class ViteManager
 {
-    private string $devServer = 'http://localhost:5173/';
+    private string $pluginPath;
+    private string $pluginUrl;
+    private string $pluginSlug;
+    private string $pluginVersion;
+    private string $devServer;
 
     /**
-     * Enqueues Vite entries with support for WordPress dependencies and options.
-     * * @param array $entries Associative array of entry files or flat list of strings.
+     * @param string $pluginPath Absolute path to the main plugin directory.
+     * @param string $pluginUrl  Base URL to the plugin directory.
+     * @param string $pluginSlug Unique slug used for asset handles.
+     * @param string $pluginVersion Current version of the plugin.
+     * @param string $devServer  URL of the Vite development server.
      */
-
-    public function __construct() {}
-
+    public function __construct(
+        string $pluginPath,
+        string $pluginUrl,
+        string $pluginSlug,
+        string $pluginVersion,
+        string $devServer = 'http://localhost:5173/'
+    ) {
+        $this->pluginPath = $pluginPath;
+        $this->pluginUrl = $pluginUrl;
+        $this->pluginSlug = $pluginSlug;
+        $this->pluginVersion = $pluginVersion;
+        $this->devServer = $devServer;
+    }
 
     public function enqueue(array $entries): void
     {
@@ -32,22 +49,16 @@ class ViteManifestHelper
 
     private function isDevMode(): bool
     {
-        return file_exists(rtrim(DIONNIE_BOILERPLATE_PLUGIN_PATH, '/') . '/public/hot');
+        return file_exists(rtrim($this->pluginPath, '/') . '/public/hot');
     }
-
-
-
 
     private function enqueueForDevelopment(array $entries): void
     {
-
         foreach ($entries as $entryKey => $config) {
             $options = is_array($config) ? $config : [];
             $deps    = $options['deps'] ?? [];
 
-            // If entry key is a numeric index, the config is actually the file path string
             $fileKey = is_int($entryKey) ? $config : $entryKey;
-
             $fileUrl = $this->devServer . ltrim($fileKey, '/');
             $handle  = $this->generateHandle($fileKey);
 
@@ -61,7 +72,7 @@ class ViteManifestHelper
 
     private function enqueueForProduction(array $entries): void
     {
-        $manifestPath = rtrim(DIONNIE_BOILERPLATE_PLUGIN_PATH, '/') . '/public/build/manifest.json';
+        $manifestPath = rtrim($this->pluginPath, '/') . '/public/build/manifest.json';
 
         if (!file_exists($manifestPath)) {
             return;
@@ -72,7 +83,7 @@ class ViteManifestHelper
             return;
         }
 
-        $assetsUrl = rtrim(DIONNIE_BOILERPLATE_PLUGIN_URL, '/') . '/public/build/';
+        $assetsUrl = rtrim($this->pluginUrl, '/') . '/public/build/';
 
         foreach ($entries as $entryKey => $config) {
             $options  = is_array($config) ? $config : [];
@@ -100,12 +111,12 @@ class ViteManifestHelper
             }
 
             if (preg_match('/\.(js|jsx|ts|tsx)$/', $fileKey)) {
-                wp_enqueue_script($handle, $fileUrl, $deps, DIONNIE_BOILERPLATE_PLUGIN_VERSION, $inFooter);
+                wp_enqueue_script($handle, $fileUrl, $deps, $this->pluginVersion, $inFooter);
 
                 if (!empty($asset['css']) && is_array($asset['css'])) {
                     foreach ($asset['css'] as $index => $cssFile) {
                         $cssHandle = $handle . '-css-' . (string)$index;
-                        wp_enqueue_style($cssHandle, $assetsUrl . ltrim($cssFile, '/'), [], DIONNIE_BOILERPLATE_PLUGIN_VERSION);
+                        wp_enqueue_style($cssHandle, $assetsUrl . ltrim($cssFile, '/'), [], $this->pluginVersion);
                     }
                 }
             }
@@ -117,6 +128,6 @@ class ViteManifestHelper
         $filename  = basename($entryKey);
         $cleanName = (string) preg_replace('/\.(css|scss|sass|js|jsx|ts|tsx)$/', '', $filename);
 
-        return DIONNIE_BOILERPLATE_PLUGIN_SLUG . '-' . sanitize_title($cleanName);
+        return $this->pluginSlug . '-' . sanitize_title($cleanName);
     }
 }
